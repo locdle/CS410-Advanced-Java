@@ -2,6 +2,10 @@ package edu.pdx.cs410J.locle;
 
 import edu.pdx.cs410J.AbstractFlight;
 
+import java.text.DateFormat;
+import java.util.Date;
+
+
 /**
  * Created by locle on 6/28/14.
  */
