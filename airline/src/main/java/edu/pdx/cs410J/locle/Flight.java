@@ -6,6 +6,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -17,6 +19,10 @@ public class Flight extends AbstractFlight {
     private String timeDeparture;
     private String destination;
     private String timeArrival;
+    private Pattern pattern;
+    private Matcher matcher;
+    private static final String TIME24HOURS_PATTERN =
+            "([01]?[0-9]|2[0-3]):[0-5][0-9]";
 
     /**
      *
@@ -57,10 +63,16 @@ public class Flight extends AbstractFlight {
 
     @Override
     public String getDepartureString() {
-        String date = getDate(timeArrival);
+        String date = getDate(timeDeparture);
+        String time = getTime(timeDeparture);
+
         if(!(isValidDate(date) || isValidDateWithOneDigitDay(date) || isValidDateWithOneDigitMonth(date) ||
                 isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(date)) ){
             System.out.println(date + " Invalid date");
+            System.exit(1);
+        }
+        if(!(isValidateTime(time))){
+            System.out.println(time + " is invalid time");
             System.exit(1);
         }
         return timeDeparture;
@@ -77,6 +89,18 @@ public class Flight extends AbstractFlight {
 
     @Override
     public String getArrivalString() {
+        String date = getDate(timeArrival);
+        String time = getTime(timeArrival);
+
+        if(!(isValidDate(date) || isValidDateWithOneDigitDay(date) || isValidDateWithOneDigitMonth(date) ||
+                isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(date)) ){
+            System.out.println(date + " Invalid date");
+            System.exit(1);
+        }
+        if(!(isValidateTime(time))){
+            System.out.println(time + " is invalid time");
+            System.exit(1);
+        }
         return timeArrival;
     }
 
@@ -165,5 +189,27 @@ public class Flight extends AbstractFlight {
         else {
             return date;
         }
+    }
+
+    public String getTime(String time){
+        int index = -1;
+        for(int i=0 ; i<time.length() -1; ++i){
+            if(time.substring(i, i+1).equals(" ")){
+                index = i;
+                break;
+            }
+        }
+        if(index != -1){
+            return time.substring(index+1, time.length());
+        }
+        else {
+            return time;
+        }
+    }
+
+    public boolean isValidateTime(String time){
+        pattern = Pattern.compile(TIME24HOURS_PATTERN);
+        matcher = pattern.matcher(time);
+        return matcher.matches();
     }
 }
