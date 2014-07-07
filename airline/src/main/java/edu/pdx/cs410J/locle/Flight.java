@@ -3,6 +3,8 @@ package edu.pdx.cs410J.locle;
 import edu.pdx.cs410J.AbstractFlight;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -34,26 +36,134 @@ public class Flight extends AbstractFlight {
 
     @Override
     public int getNumber() {
-        return Integer.parseInt(number);
+        int num = 0;
+        try {
+            num =  Integer.parseInt(number);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid flight number");
+            System.exit(1);
+        }
+        return num;
     }
 
     @Override
     public String getSource() {
+        if(source.length() != 3){
+            System.out.println("Invalid departure airport");
+            System.exit(1);
+        }
         return source;
     }
 
     @Override
     public String getDepartureString() {
+        String date = getDate(timeArrival);
+        if(!(isValidDate(date) || isValidDateWithOneDigitDay(date) || isValidDateWithOneDigitMonth(date) ||
+                isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(date)) ){
+            System.out.println(date + " Invalid date");
+            System.exit(1);
+        }
         return timeDeparture;
     }
 
     @Override
     public String getDestination() {
+        if (destination.length() != 3){
+            System.out.println("Invalid arrival airport");
+            System.exit(1);
+        }
         return destination;
     }
 
     @Override
     public String getArrivalString() {
         return timeArrival;
+    }
+
+    public boolean isValidDate (String date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
+        Date testDate = null;
+        try{
+            testDate = dateFormat.parse(date);
+        }
+        catch (ParseException e){
+            return false;
+        }
+        if(!dateFormat.format(testDate).equals(date)){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isValidDateWithOneDigitMonth (String date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("m/dd/yyyy");
+        Date testDate = null;
+        try{
+            testDate = dateFormat.parse(date);
+
+        }
+        catch (ParseException e){
+            return false;
+        }
+        if(!dateFormat.format(testDate).equals(date)){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isValidDateWithOneDigitDay (String date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("mm/d/yyyy");
+        Date testDate = null;
+        try{
+            testDate = dateFormat.parse(date);
+        }
+        catch (ParseException e){
+            return false;
+        }
+        if(!dateFormat.format(testDate).equals(date)){
+            return false;
+        }
+        if(Integer.parseInt(date.substring(0,2)) > 12){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth (String date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("m/d/yyyy");
+        Date testDate = null;
+        try{
+            testDate = dateFormat.parse(date);
+        }
+        catch (ParseException e){
+            return false;
+        }
+        if(!dateFormat.format(testDate).equals(date)){
+            return false;
+        }
+        try{
+            if(Integer.parseInt(date.substring(0,2)) > 12){
+                return false;
+            }
+        }
+        catch (NumberFormatException e) {
+        }
+        return true;
+    }
+
+    public String getDate(String date){
+        int index = -1;
+        for(int i=0 ; i<date.length() -1; ++i){
+            if(date.substring(i, i+1).equals(" ")){
+                index = i;
+                break;
+            }
+        }
+        if(index != -1){
+            return date.substring(0, index);
+        }
+        else {
+            return date;
+        }
     }
 }

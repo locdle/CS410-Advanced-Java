@@ -37,11 +37,7 @@ public class Project1 {
           String destination = args[5];
           String arriveTime = args[6];
           AbstractFlight flight = new Flight(flightNumber, source, departTime, destination, arriveTime );
-          Collection <Flight> flights = new ArrayList<>();
-          flights.add((Flight)flight);
-          AbstractAirline airline = new Airline(name, flights);
-          airline.toString();
-          System.out.println(airline.toString());
+
           System.out.println(flight.toString());
       }
   }
