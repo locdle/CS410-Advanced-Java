@@ -41,6 +41,9 @@ public class Flight extends AbstractFlight {
     }
 
     @Override
+    /**
+     * get number of the flight and make sure this is valid number
+     */
     public int getNumber() {
         int num = 0;
         try {
@@ -53,6 +56,9 @@ public class Flight extends AbstractFlight {
     }
 
     @Override
+    /**
+     *  get the three letter code of departure airline
+     */
     public String getSource() {
         if(source.length() != 3){
             System.out.println("Invalid departure airport");
@@ -62,6 +68,9 @@ public class Flight extends AbstractFlight {
     }
 
     @Override
+    /**
+     *  get the time and day of departure
+     */
     public String getDepartureString() {
         String date = getDate(timeDeparture);
         String time = getTime(timeDeparture);
@@ -79,6 +88,9 @@ public class Flight extends AbstractFlight {
     }
 
     @Override
+    /**
+     *  get 3 letter code of destination airport
+     */
     public String getDestination() {
         if (destination.length() != 3){
             System.out.println("Invalid arrival airport");
@@ -88,6 +100,9 @@ public class Flight extends AbstractFlight {
     }
 
     @Override
+    /**
+     *  get arrival's day and time
+     */
     public String getArrivalString() {
         String date = getDate(timeArrival);
         String time = getTime(timeArrival);
@@ -104,6 +119,11 @@ public class Flight extends AbstractFlight {
         return timeArrival;
     }
 
+    /**
+     * check date is in form mm/dd/yyyy
+     * @param date: at departure or arrival
+     * @return true if it's valid and vice versa
+     */
     public boolean isValidDate (String date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
         Date testDate = null;
@@ -119,6 +139,11 @@ public class Flight extends AbstractFlight {
         return true;
     }
 
+    /**
+     * check date is in form m/dd/yyyy
+     * @param date: at departure or arrival
+     * @return true if it's valid and vice versa
+     */
     public boolean isValidDateWithOneDigitMonth (String date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("m/dd/yyyy");
         Date testDate = null;
@@ -135,6 +160,11 @@ public class Flight extends AbstractFlight {
         return true;
     }
 
+    /**
+     * check date is in form mm/d/yyyy
+     * @param date: at departure or arrival
+     * @return true if it's valid and vice versa
+     */
     public boolean isValidDateWithOneDigitDay (String date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("mm/d/yyyy");
         Date testDate = null;
@@ -153,6 +183,11 @@ public class Flight extends AbstractFlight {
         return true;
     }
 
+    /**
+     * check date is in form m/d/yyyy
+     * @param date: at departure or arrival
+     * @return true if it's valid and vice versa
+     */
     public boolean isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth (String date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("m/d/yyyy");
         Date testDate = null;
@@ -175,38 +210,53 @@ public class Flight extends AbstractFlight {
         return true;
     }
 
-    public String getDate(String date){
+    /**
+     *
+     * @param dateAndTime date and time at departure or arrival airport
+     * @return date at departure or arrival airport
+     */
+    public String getDate(String dateAndTime){
         int index = -1;
-        for(int i=0 ; i<date.length() -1; ++i){
-            if(date.substring(i, i+1).equals(" ")){
+        for(int i=0 ; i<dateAndTime.length() -1; ++i){
+            if(dateAndTime.substring(i, i+1).equals(" ")){
                 index = i;
                 break;
             }
         }
         if(index != -1){
-            return date.substring(0, index);
+            return dateAndTime.substring(0, index);
         }
         else {
-            return date;
+            return dateAndTime;
         }
     }
 
-    public String getTime(String time){
+    /**
+     *
+     * @param dayAndTime date and time at departure or arrival airport
+     * @return time  at departure or arrival airport
+     */
+    public String getTime(String dayAndTime){
         int index = -1;
-        for(int i=0 ; i<time.length() -1; ++i){
-            if(time.substring(i, i+1).equals(" ")){
+        for(int i=0 ; i<dayAndTime.length() -1; ++i){
+            if(dayAndTime.substring(i, i+1).equals(" ")){
                 index = i;
                 break;
             }
         }
         if(index != -1){
-            return time.substring(index+1, time.length());
+            return dayAndTime.substring(index+1, dayAndTime.length());
         }
         else {
-            return time;
+            return dayAndTime;
         }
     }
 
+    /**
+     *
+     * @param time  at departure or arrival airport
+     * @return true it it's valid 24 hours time and vice versa
+     */
     public boolean isValidateTime(String time){
         pattern = Pattern.compile(TIME24HOURS_PATTERN);
         matcher = pattern.matcher(time);
