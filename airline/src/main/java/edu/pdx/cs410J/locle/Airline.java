@@ -24,16 +24,25 @@ public class Airline extends AbstractAirline {
     }
 
     @Override
+    /**
+     * get name of the airline
+     */
     public String getName() {
         return name;
     }
 
     @Override
+    /**
+     * add the info of new flight to the collection of flight
+     */
     public void addFlight(AbstractFlight flight) {
         flights.add((Flight) flight);
     }
 
     @Override
+    /**
+     * return the collection of the flight
+     */
     public Collection getFlights() {
         return flights;
     }
