@@ -16,8 +16,10 @@ import java.util.regex.Pattern;
 public class Flight extends AbstractFlight {
     private String number;
     private String source;
+    private String dateDeparture;
     private String timeDeparture;
     private String destination;
+    private String dateArrival;
     private String timeArrival;
     private Pattern pattern;
     private Matcher matcher;
@@ -32,11 +34,14 @@ public class Flight extends AbstractFlight {
      * @param destination: three-letter code of the airport at which this flight terminates
      * @param timeArrival: representation of this flight's arrival time
      */
-    public Flight(String number, String source, String timeDeparture, String destination, String timeArrival) {
+    public Flight(String number, String source, String dateDeparture, String timeDeparture,
+                  String destination, String dateArrival, String timeArrival) {
         this.number = number;
         this.source = source;
+        this.dateDeparture = dateDeparture;
         this.timeDeparture = timeDeparture;
         this.destination = destination;
+        this.dateArrival = dateArrival;
         this.timeArrival = timeArrival;
     }
 
@@ -49,7 +54,7 @@ public class Flight extends AbstractFlight {
         try {
             num =  Integer.parseInt(number);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid flight number");
+            System.out.println("Flight number isn't an integer");
             System.exit(1);
         }
         return num;
@@ -72,16 +77,13 @@ public class Flight extends AbstractFlight {
      *  get the time and day of departure
      */
     public String getDepartureString() {
-        String date = getDate(timeDeparture);
-        String time = getTime(timeDeparture);
-
-        if(!(isValidDate(date) || isValidDateWithOneDigitDay(date) || isValidDateWithOneDigitMonth(date) ||
-                isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(date)) ){
-            System.out.println(date + " Invalid date");
+        if(!(isValidDate(dateDeparture) || isValidDateWithOneDigitDay(dateDeparture) || isValidDateWithOneDigitMonth(dateDeparture) ||
+                isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(dateDeparture)) ){
+            System.out.println(dateDeparture + ": Invalid date");
             System.exit(1);
         }
-        if(!(isValidateTime(time))){
-            System.out.println(time + " is invalid time");
+        if(!(isValidateTime(timeDeparture))){
+            System.out.println(timeDeparture + ": is invalid time");
             System.exit(1);
         }
         return timeDeparture;
@@ -104,16 +106,13 @@ public class Flight extends AbstractFlight {
      *  get arrival's day and time
      */
     public String getArrivalString() {
-        String date = getDate(timeArrival);
-        String time = getTime(timeArrival);
-
-        if(!(isValidDate(date) || isValidDateWithOneDigitDay(date) || isValidDateWithOneDigitMonth(date) ||
-                isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(date)) ){
-            System.out.println(date + " Invalid date");
+        if(!(isValidDate(dateArrival) || isValidDateWithOneDigitDay(dateArrival) || isValidDateWithOneDigitMonth(dateArrival) ||
+                isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(dateArrival)) ){
+            System.out.println(dateArrival + " is invalid date");
             System.exit(1);
         }
-        if(!(isValidateTime(time))){
-            System.out.println(time + " is invalid time");
+        if(!(isValidateTime(timeArrival))){
+            System.out.println(timeArrival + " is invalid time");
             System.exit(1);
         }
         return timeArrival;

@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 public class Project1 {
 
-  public static void main(String[] args) throws FileNotFoundException {
+  public static void main(String[] args) throws IOException {
 //    Class c = AbstractAirline.class;  // Refer to one of Dave's classes so that we can be sure it is on the classpath
 //    System.err.println("Missing command line arguments");
 //    for (String arg : args) {
@@ -28,19 +28,19 @@ public class Project1 {
           System.exit(1);
       }
       else if (args.length == 1 && args[0].equals("-README")){
-
+              System.out.println("Loc Le - Advance Java - Project 1");
               System.out.println("This is a  README for this project airline \n" +
-                                 "THe project takes options and arguments \n" +
+                                 "The project takes options and arguments \n" +
                                         "\t options are \n" +
                                             "\t\t-print will print description of the new flight \n" +
                                             "\t\t-README will print a README for this project and exits \n" +
-                                        "\targs are \n" +
-                                            "\t name:          the name of the airline \n" +
-                                            "\t flightNumber:  the flight number\n" +
-                                            "\t src:           three-letter code of departure airport\n" +
-                                            "\t departTime:    departure date and time (24-hour time)\n" +
-                                            "\t dest:          three-letter code of arrival airport\n" +
-                                            "\t arriveTime:    arrival date and time (24-hour time)\n");
+                                        "\t args are \n" +
+                                            "\t\t name:          the name of the airline \n" +
+                                            "\t\t flightNumber:  the flight number\n" +
+                                            "\t\t src:           three-letter code of departure airport\n" +
+                                            "\t\t departTime:    departure date and time (24-hour time)\n" +
+                                            "\t\t dest:          three-letter code of arrival airport\n" +
+                                            "\t\t arriveTime:    arrival date and time (24-hour time)\n");
 
               System.exit(1);
 
@@ -52,24 +52,31 @@ public class Project1 {
                 System.exit(1);
             }
       }
-      else if (args.length == 7 && args[0].equals("-print")){
+      else if (args.length == 9 && args[0].equals("-print")){
           String name = args[1];
           String flightNumber = args[2];
           String source = args[3];
-          String departTime = args[4];
-          String destination = args[5];
-          String arriveTime = args[6];
+          String departDay = args[4];
+          String departTime = args[5];
+          String destination = args[6];
+          String arriveDay = args[7];
+          String arriveTime = args[8];
 
-          AbstractFlight flight = new Flight(flightNumber, source, departTime, destination, arriveTime );
+          AbstractFlight flight = new Flight(flightNumber, source, departDay, departTime,
+                  destination, arriveDay, arriveTime );
           Collection<Flight> flightCollection = new ArrayList<>();
           flightCollection.add((Flight) flight);
           AbstractAirline airline = new Airline(name, flightCollection);
 
-          System.out.println(airline.toString());
           System.out.println(flight.toString());
+
+      }
+      else if(args.length < 9){
+          System.err.println("Missing arguments. \tRun -README to see the correct input arguments");
+
       }
       else{
-          System.err.println("Invalid syntax");
+          System.err.println("Unknown command line argument");
           System.exit(1);
 
       }
