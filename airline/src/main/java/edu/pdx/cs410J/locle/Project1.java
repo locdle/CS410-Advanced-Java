@@ -52,23 +52,6 @@ public class Project1 {
                 System.exit(1);
             }
       }
-      else if (args.length == 8 ) {
-          String name = args[0];
-          String flightNumber = args[1];
-          String source = args[2];
-          String departDay = args[3];
-          String departTime = args[4];
-          String destination = args[5];
-          String arriveDay = args[6];
-          String arriveTime = args[7];
-
-          AbstractFlight flight = new Flight(flightNumber, source, departDay, departTime,
-                  destination, arriveDay, arriveTime);
-          Collection<Flight> flightCollection = new ArrayList<>();
-          flightCollection.add((Flight) flight);
-          AbstractAirline airline = new Airline(name, flightCollection);
-          flight.toString();
-      }
       else if (args.length == 9 && args[0].equals("-print")){
           String name = args[1];
           String flightNumber = args[2];
@@ -87,6 +70,24 @@ public class Project1 {
           System.out.println(airline.toString());
           System.out.println(flight.toString());
       }
+      else if (args.length == 8 ) {
+          String name = args[0];
+          String flightNumber = args[1];
+          String source = args[2];
+          String departDay = args[3];
+          String departTime = args[4];
+          String destination = args[5];
+          String arriveDay = args[6];
+          String arriveTime = args[7];
+
+          AbstractFlight flight = new Flight(flightNumber, source, departDay, departTime,
+                  destination, arriveDay, arriveTime);
+          Collection<Flight> flightCollection = new ArrayList<>();
+          flightCollection.add((Flight) flight);
+          AbstractAirline airline = new Airline(name, flightCollection);
+          flight.toString();
+      }
+
       else if(args.length < 9){
           System.err.println("Missing arguments. \tRun -README to see the correct input arguments");
 
