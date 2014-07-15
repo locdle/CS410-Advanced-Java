@@ -54,7 +54,7 @@ public class Flight extends AbstractFlight {
         try {
             num =  Integer.parseInt(number);
         } catch (NumberFormatException e) {
-            System.out.println("Flight number isn't an integer");
+            System.err.println("Flight number isn't an integer");
             System.exit(1);
         }
         return num;
@@ -66,7 +66,7 @@ public class Flight extends AbstractFlight {
      */
     public String getSource() {
         if(source.length() != 3){
-            System.out.println("Invalid departure airport");
+            System.err.println("Invalid departure airport");
             System.exit(1);
         }
         return source;
@@ -79,11 +79,11 @@ public class Flight extends AbstractFlight {
     public String getDepartureString() {
         if(!(isValidDate(dateDeparture) || isValidDateWithOneDigitDay(dateDeparture) || isValidDateWithOneDigitMonth(dateDeparture) ||
                 isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(dateDeparture)) ){
-            System.out.println(dateDeparture + ": Invalid date");
+            System.err.println(dateDeparture + ": Invalid date");
             System.exit(1);
         }
         if(!(isValidateTime(timeDeparture))){
-            System.out.println(timeDeparture + ": is invalid time");
+            System.err.println(timeDeparture + ": is invalid time");
             System.exit(1);
         }
         return timeDeparture;
@@ -95,7 +95,7 @@ public class Flight extends AbstractFlight {
      */
     public String getDestination() {
         if (destination.length() != 3){
-            System.out.println("Invalid arrival airport");
+            System.err.println("Invalid arrival airport");
             System.exit(1);
         }
         return destination;
@@ -108,11 +108,11 @@ public class Flight extends AbstractFlight {
     public String getArrivalString() {
         if(!(isValidDate(dateArrival) || isValidDateWithOneDigitDay(dateArrival) || isValidDateWithOneDigitMonth(dateArrival) ||
                 isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(dateArrival)) ){
-            System.out.println(dateArrival + " is invalid date");
+            System.err.println(dateArrival + " is invalid date");
             System.exit(1);
         }
         if(!(isValidateTime(timeArrival))){
-            System.out.println(timeArrival + " is invalid time");
+            System.err.println(timeArrival + " is invalid time");
             System.exit(1);
         }
         return timeArrival;
