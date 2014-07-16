@@ -26,6 +26,34 @@ public class Flight extends AbstractFlight {
     private static final String TIME24HOURS_PATTERN =
             "([01]?[0-9]|2[0-3]):[0-5][0-9]";
 
+    public String getDateDeparture() {
+        return dateDeparture;
+    }
+
+    public String getTimeDeparture() {
+        return timeDeparture;
+    }
+
+    public String getDateArrival() {
+        return dateArrival;
+    }
+
+    public String getTimeArrival() {
+        return timeArrival;
+    }
+
+    public Pattern getPattern() {
+        return pattern;
+    }
+
+    public Matcher getMatcher() {
+        return matcher;
+    }
+
+    public static String getTime24hoursPattern() {
+        return TIME24HOURS_PATTERN;
+    }
+
     /**
      *
      * @param number: number that uniquely identifies this flight
