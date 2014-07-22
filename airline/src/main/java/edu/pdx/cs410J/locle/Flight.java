@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.locle;
 
 import edu.pdx.cs410J.AbstractFlight;
+import edu.pdx.cs410J.AirportNames;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,12 +14,14 @@ import java.util.regex.Pattern;
 /**
  * Created by locle on 6/28/14.
  */
-public class Flight extends AbstractFlight {
+public class Flight extends AbstractFlight implements Comparable<Flight> {
     private String number;
     private String source;
     private String dateDeparture;
     private String timeDeparture;
+    private Date departure;
     private String destination;
+    private Date arrival;
     private String dateArrival;
     private String timeArrival;
     private Pattern pattern;
@@ -73,6 +76,14 @@ public class Flight extends AbstractFlight {
         this.timeArrival = timeArrival;
     }
 
+    public Flight(String number, String source, Date departure, String destination, Date arrival) {
+        this.number = number;
+        this.source = source;
+        this.departure = departure;
+        this.destination = destination;
+        this.arrival = arrival;
+    }
+
     @Override
     /**
      * get number of the flight and make sure this is valid number
@@ -105,16 +116,17 @@ public class Flight extends AbstractFlight {
      *  get the time and day of departure
      */
     public String getDepartureString() {
-        if(!(isValidDate(dateDeparture) || isValidDateWithOneDigitDay(dateDeparture) || isValidDateWithOneDigitMonth(dateDeparture) ||
-                isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(dateDeparture)) ){
-            System.err.println(dateDeparture + ": Invalid date");
-            System.exit(1);
-        }
-        if(!(isValidateTime(timeDeparture))){
-            System.err.println(timeDeparture + ": is invalid time");
-            System.exit(1);
-        }
-        return timeDeparture;
+//        if(!(isValidDate(dateDeparture) || isValidDateWithOneDigitDay(dateDeparture) || isValidDateWithOneDigitMonth(dateDeparture) ||
+//                isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(dateDeparture)) ){
+//            System.err.println(dateDeparture + ": Invalid date");
+//            System.exit(1);
+//        }
+//        if(!(isValidateTime(timeDeparture))){
+//            System.err.println(timeDeparture + ": is invalid time");
+//            System.exit(1);
+//        }
+//        return dateDeparture + " " +timeDeparture;
+        return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(departure);
     }
 
     @Override
@@ -134,16 +146,17 @@ public class Flight extends AbstractFlight {
      *  get arrival's day and time
      */
     public String getArrivalString() {
-        if(!(isValidDate(dateArrival) || isValidDateWithOneDigitDay(dateArrival) || isValidDateWithOneDigitMonth(dateArrival) ||
-                isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(dateArrival)) ){
-            System.err.println(dateArrival + " is invalid date");
-            System.exit(1);
-        }
-        if(!(isValidateTime(timeArrival))){
-            System.err.println(timeArrival + " is invalid time");
-            System.exit(1);
-        }
-        return timeArrival;
+//        if(!(isValidDate(dateArrival) || isValidDateWithOneDigitDay(dateArrival) || isValidDateWithOneDigitMonth(dateArrival) ||
+//                isValidDateWithOneDigitDayAndValidDateWithOneDigitMonth(dateArrival)) ){
+//            System.err.println(dateArrival + " is invalid date");
+//            System.exit(1);
+//        }
+//        if(!(isValidateTime(timeArrival))){
+//            System.err.println(timeArrival + " is invalid time");
+//            System.exit(1);
+//        }
+//        return dateArrival + " " + timeArrival;
+        return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(arrival);
     }
 
     /**
@@ -288,5 +301,26 @@ public class Flight extends AbstractFlight {
         pattern = Pattern.compile(TIME24HOURS_PATTERN);
         matcher = pattern.matcher(time);
         return matcher.matches();
+    }
+
+
+    @Override
+    public Date getDeparture() {
+        return super.getDeparture();
+    }
+
+    @Override
+    public Date getArrival() {
+        return super.getArrival();
+    }
+
+    @Override
+    public int compareTo(Flight o) {
+        if(this.getSource().compareTo(o.getSource()) != 0){
+            return this.getSource().compareTo(o.getSource());
+        }
+        else{
+            return this.getDepartureString().compareTo(o.getDepartureString());
+        }
     }
 }

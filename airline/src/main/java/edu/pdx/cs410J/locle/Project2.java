@@ -25,7 +25,7 @@ public class Project2 {
             System.exit(1);
         }
         if (args.length == 1 && args[0].equals("-README")){
-            System.out.println("Loc Le - Advance Java - Project 1");
+            System.out.println("Loc Le - Advance Java - Project 2");
             System.out.println("This is a  README for this project airline \n" +
                     "The project takes options and arguments \n" +
                     "\t options are \n" +
@@ -38,7 +38,7 @@ public class Project2 {
                     "\t\t src:           three-letter code of departure airport\n" +
                     "\t\t departTime:    departure date and time (24-hour time)\n" +
                     "\t\t dest:          three-letter code of arrival airport\n" +
-                    "\t\t arriveTime:    arrival date and time (24-hour time)\n");
+                    "\t\t arriveTime:    arrival date and time (24-hour time)");
 
             System.exit(1);
         }

@@ -3,15 +3,15 @@ package edu.pdx.cs410J.locle;
 import edu.pdx.cs410J.AbstractAirline;
 import edu.pdx.cs410J.AbstractFlight;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Created by locle on 6/28/14.
  */
 public class Airline extends AbstractAirline {
     private String name;
-    private Collection<Flight> flights = new ArrayList<>();
+    private List<Flight> flights;
+//    private Collection<Flight> flights = new ArrayList<>();
 
     /**
      *
@@ -19,6 +19,7 @@ public class Airline extends AbstractAirline {
      */
     public Airline(String name) {
         this.name = name;
+        this.flights = new LinkedList<>();
     }
 
     /**
@@ -44,7 +45,8 @@ public class Airline extends AbstractAirline {
      * add the info of new flight to the collection of flight
      */
     public void addFlight(AbstractFlight flight) {
-        flights.add((Flight) flight);
+        flights.add((Flight)flight);
+        Collections.sort(flights);
     }
 
     @Override
@@ -58,24 +60,37 @@ public class Airline extends AbstractAirline {
     public String print(){
         String printOutAirlineInfo = "Airline name: " + name + " has ";
 
-        for(Flight flight: flights){
-            printOutAirlineInfo += flight.toString();
+        for(int i=0; i<flights.size(); ++i){
+            printOutAirlineInfo += flights.get(i).toString();
         }
+//        for(Flight flight: flights){
+//            printOutAirlineInfo += flight.toString();
+//        }
         return printOutAirlineInfo;
     }
 
     public String printFlight(){
         String printOutAirlineFlight = "";
-        int lastIndex = flights.size() -1;
-        for(Flight flight: flights){
-            printOutAirlineFlight += name + " " + flight.getNumber()
-                                          + " " + flight.getSource()
-                                          + " " + flight.getDateDeparture()
-                                          + " " + flight.getTimeDeparture()
-                                          + " " + flight.getDestination()
-                                          + " " + flight.getDateArrival()
-                                          + " " + flight.getTimeArrival();
+
+        for (int i=0; i<flights.size(); ++i){
+            Flight printFLight = (Flight)flights.get(i);
+            printOutAirlineFlight += name + " " + printFLight.getNumber()
+                    + " " + printFLight.getSource()
+                    + " " + printFLight.getDateDeparture()
+                    + " " + printFLight.getTimeDeparture()
+                    + " " + printFLight.getDestination()
+                    + " " + printFLight.getDateArrival()
+                    + " " + printFLight.getTimeArrival();
         }
+//        for(Flight flight: flights){
+//            printOutAirlineFlight += name + " " + flight.getNumber()
+//                                          + " " + flight.getSource()
+//                                          + " " + flight.getDateDeparture()
+//                                          + " " + flight.getTimeDeparture()
+//                                          + " " + flight.getDestination()
+//                                          + " " + flight.getDateArrival()
+//                                          + " " + flight.getTimeArrival();
+//        }
         return printOutAirlineFlight;
     }
 }
