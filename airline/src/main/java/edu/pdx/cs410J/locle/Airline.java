@@ -61,7 +61,7 @@ public class Airline extends AbstractAirline {
         String printOutAirlineInfo = "Airline name: " + name + " has ";
 
         for(int i=0; i<flights.size(); ++i){
-            printOutAirlineInfo += flights.get(i).toString();
+            printOutAirlineInfo += flights.get(i).toString() + ". And it takes " + flights.get(i).durationTime() + " in minutes";
         }
 //        for(Flight flight: flights){
 //            printOutAirlineInfo += flight.toString();

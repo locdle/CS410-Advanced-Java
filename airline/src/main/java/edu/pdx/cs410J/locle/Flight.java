@@ -29,30 +29,58 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
     private static final String TIME24HOURS_PATTERN =
             "([01]?[0-9]|2[0-3]):[0-5][0-9]";
 
+    /**
+     *  getter the getDate departure
+     * @return the string for date departure
+     */
     public String getDateDeparture() {
         return dateDeparture;
     }
 
+    /**
+     * getter for get time departure
+     * @return the string for time departure
+     */
     public String getTimeDeparture() {
         return timeDeparture;
     }
 
+    /**
+     *  getter the getDate arrival
+     * @return the string for date arrival
+     */
     public String getDateArrival() {
         return dateArrival;
     }
 
+    /**
+     * getter for get time arrival
+     * @return the string for time arrival
+     */
     public String getTimeArrival() {
         return timeArrival;
     }
 
+    /**
+     *
+     * @return the pattern
+     */
     public Pattern getPattern() {
         return pattern;
     }
 
+    /**
+     *
+     * @return the matcher
+     */
     public Matcher getMatcher() {
         return matcher;
     }
 
+    /**
+     *
+     * @return 24hours time pattern
+     */
     public static String getTime24hoursPattern() {
         return TIME24HOURS_PATTERN;
     }
@@ -323,4 +351,10 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
             return this.getDepartureString().compareTo(o.getDepartureString());
         }
     }
+
+    public long durationTime(){
+        long different = (this.arrival.getTime() - this.departure.getTime())/6000;
+        return different;
+    }
+
 }
