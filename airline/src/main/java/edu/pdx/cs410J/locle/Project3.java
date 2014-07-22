@@ -5,6 +5,7 @@ import edu.pdx.cs410J.AbstractFlight;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,8 +23,9 @@ public class Project3 {
     private static Boolean isTextFile = false;
     private static Boolean isPretty = false;
     private static String fileName = null;
+    private static String prettyFileName = null;
 
-    public static void main(String[] args) throws ParserException {
+    public static void main(String[] args) throws ParserException, IOException {
         if (args.length == 0) {
             System.err.println("Missing command line arguments");
             System.exit(1);
@@ -49,6 +51,17 @@ public class Project3 {
         }
 
         String [] argsToCreateAirLine = parseCommandLine(args);
+
+        if(argsToCreateAirLine.length != 10){
+            System.err.println("Unknown command line argument or missing argument.\nRun -README to do correct input.");
+            System.exit(1);
+        }
+
+        if(args.length > 13){
+            System.err.println("Too many command line argument");
+            System.exit(1);
+        }
+
         if(isPrint == false && argsToCreateAirLine.length == 10){
             String name = argsToCreateAirLine[0];
             String flightNumber = argsToCreateAirLine[1];
@@ -71,7 +84,7 @@ public class Project3 {
             flight.toString();
         }
 
-        if(isPrint == true && argsToCreateAirLine.length == 10){
+         if(isPrint == true && argsToCreateAirLine.length == 10){
             String name = argsToCreateAirLine[0];
             String flightNumber = argsToCreateAirLine[1];
             String source = argsToCreateAirLine[2];
@@ -93,7 +106,7 @@ public class Project3 {
             System.out.println(flight.toString());
         }
 
-         if(isTextFile == true && argsToCreateAirLine.length == 10){
+          if(isTextFile == true && argsToCreateAirLine.length == 10){
             String name = argsToCreateAirLine[0];
             String flightNumber = argsToCreateAirLine[1];
             String source = argsToCreateAirLine[2];
@@ -113,14 +126,11 @@ public class Project3 {
             if(isPrint){
                 System.out.println(flight.toString());
             }
-//            Collection<Flight> flightCollection = new ArrayList<>();
-//            flightCollection.add((Flight) flight);
-//            AbstractAirline airline = new Airline(name, flightCollection);
+
             AbstractAirline airline = new Airline(name);
             airline.addFlight(flight);
             File file = new File(fileName);
             if(!file.exists()) {
-                System.out.println("file doesnot exits");
                 TextDumper textDumper = new TextDumper(fileName);
                 textDumper.dump(airline);
             }
@@ -129,37 +139,46 @@ public class Project3 {
                 textDumper.dump(airline);
                 TextParser textParser = new TextParser(fileName, airline);
                 textParser.parse();
-//            Airline airlineParser = (Airline) textParser.parse();
-//            System.out.println(airlineParser.print());
+
 
             }
         }
 
-        if(isPretty && argsToCreateAirLine.length == 8){
+        if(isPretty == true && argsToCreateAirLine.length == 10){
             String name = argsToCreateAirLine[0];
             String flightNumber = argsToCreateAirLine[1];
             String source = argsToCreateAirLine[2];
             String departDay = argsToCreateAirLine[3];
             String departTime = argsToCreateAirLine[4];
-            String destination = argsToCreateAirLine[5];
-            String arriveDay = argsToCreateAirLine[6];
-            String arriveTime = argsToCreateAirLine[7];
-            AbstractFlight flight = new Flight(flightNumber, source, departDay, departTime,
-                    destination, arriveDay, arriveTime);
+            String ampm = argsToCreateAirLine[5];
+            String destination = argsToCreateAirLine[6];
+            String arriveDay = argsToCreateAirLine[7];
+            String arriveTime = argsToCreateAirLine[8];
+            String ampm1 = argsToCreateAirLine[9];
+
+            Date dateDepature = dateAndTimeFormat(departDay, departTime, ampm);
+            Date dateArrival = dateAndTimeFormat(arriveDay, arriveTime, ampm1);
+
+            AbstractFlight flight = new Flight(flightNumber, source, dateDepature,
+                    destination, dateArrival);
+            if(isPrint){
+                System.out.println(flight.toString());
+            }
+
             AbstractAirline airline = new Airline(name);
             airline.addFlight(flight);
-
-        }
-
-
-         if(argsToCreateAirLine.length != 10){
-            System.err.println("Unknown command line argument or missing argument.\nRun -README to do correct input.");
-            System.exit(1);
-        }
-
-         if(args.length > 13){
-            System.err.println("Too many command line argument");
-            System.exit(1);
+            PrettyPrinter prettyPrinter = new PrettyPrinter(prettyFileName);
+            prettyPrinter.dump(airline);
+//            File file = new File(prettyFileName);
+//            if(!file.exists()) {
+//                PrettyPrinter prettyPrinter = new PrettyPrinter(prettyFileName);
+//                prettyPrinter.dump(airline);
+//            }
+//            else {
+//                TextDumper textDumper = new TextDumper(fileName);
+//                textDumper.dump(airline);
+//
+//            }
         }
 
     }
@@ -197,23 +216,29 @@ public class Project3 {
         }
 
         for (int i =0; i<stringList.size(); ++i){
-//            if(stringList.get(i).equals("-README")){
-//                isReadme = true;
-//                stringList.remove(i);
-//            }
             if(stringList.get(i).equals("-textFile")){
                 isTextFile = true;
                 fileName = stringList.get(i+1);
                 stringList.remove(i);
                 stringList.remove(i);
             }
-//            if(stringList.get(i).equals("-print")){
-//                isPrint = true;
-//                stringList.remove(i);
-//            }
-
             if(stringList.get(i).equals("-pretty")){
                 isPretty = true;
+                prettyFileName = stringList.get(i+1);
+                stringList.remove(i);
+                stringList.remove(i);
+            }
+        }
+
+        for (int i =0; i<stringList.size(); ++i){
+            if(stringList.get(i).equals("-pretty")){
+                isPretty = true;
+                prettyFileName = stringList.get(i+1);
+                stringList.remove(i);
+                stringList.remove(i);
+            }
+            if(stringList.get(i).equals("-textFile")){
+                isTextFile = true;
                 fileName = stringList.get(i+1);
                 stringList.remove(i);
                 stringList.remove(i);
