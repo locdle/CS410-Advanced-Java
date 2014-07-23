@@ -76,6 +76,9 @@ public class Project3 {
             String arriveTime = argsToCreateAirLine[8];
             String ampm1 = argsToCreateAirLine[9];
 
+            validAirportName(source);
+            validAirportName(destination);
+
             Date dateDepature = dateAndTimeFormat(departDay, departTime, ampm);
             Date dateArrival = dateAndTimeFormat(arriveDay, arriveTime, ampm1);
 
@@ -119,6 +122,9 @@ public class Project3 {
             String arriveDay = argsToCreateAirLine[7];
             String arriveTime = argsToCreateAirLine[8];
             String ampm1 = argsToCreateAirLine[9];
+
+            validAirportName(source);
+            validAirportName(destination);
 
             Date dateDepature = dateAndTimeFormat(departDay, departTime, ampm);
             Date dateArrival = dateAndTimeFormat(arriveDay, arriveTime, ampm1);
@@ -205,6 +211,94 @@ public class Project3 {
             System.out.println(flight.toString());
             System.out.println(airline.toString());
         }
+
+        if(isPretty == true && isTextFile && argsToCreateAirLine.length == 10 && !isDash){
+            String name = argsToCreateAirLine[0];
+            String flightNumber = argsToCreateAirLine[1];
+            String source = argsToCreateAirLine[2];
+            String departDay = argsToCreateAirLine[3];
+            String departTime = argsToCreateAirLine[4];
+            String ampm = argsToCreateAirLine[5];
+            String destination = argsToCreateAirLine[6];
+            String arriveDay = argsToCreateAirLine[7];
+            String arriveTime = argsToCreateAirLine[8];
+            String ampm1 = argsToCreateAirLine[9];
+
+            validAirportName(source);
+            validAirportName(destination);
+
+            Date dateDepature = dateAndTimeFormat(departDay, departTime, ampm);
+            Date dateArrival = dateAndTimeFormat(arriveDay, arriveTime, ampm1);
+
+            AbstractFlight flight = new Flight(flightNumber, source, dateDepature,
+                    destination, dateArrival);
+            if(isPrint){
+                System.out.println(flight.toString());
+            }
+
+            AbstractAirline airline = new Airline(name);
+            airline.addFlight(flight);
+
+            File file = new File(fileName);
+            if(!file.exists()) {
+                TextDumper textDumper = new TextDumper(fileName);
+                textDumper.dump(airline);
+            }
+            else {
+                TextDumper textDumper = new TextDumper(fileName);
+                textDumper.dump(airline);
+                TextParser textParser = new TextParser(fileName, airline);
+                textParser.parse();
+            }
+
+            PrettyPrinter prettyPrinter = new PrettyPrinter(prettyFileName);
+            prettyPrinter.dump(airline);
+        }
+
+        if(isPretty == true && argsToCreateAirLine.length == 10 && isDash){
+            String name = argsToCreateAirLine[0];
+            String flightNumber = argsToCreateAirLine[1];
+            String source = argsToCreateAirLine[2];
+            String departDay = argsToCreateAirLine[3];
+            String departTime = argsToCreateAirLine[4];
+            String ampm = argsToCreateAirLine[5];
+            String destination = argsToCreateAirLine[6];
+            String arriveDay = argsToCreateAirLine[7];
+            String arriveTime = argsToCreateAirLine[8];
+            String ampm1 = argsToCreateAirLine[9];
+
+            validAirportName(source);
+            validAirportName(destination);
+
+            Date dateDepature = dateAndTimeFormat(departDay, departTime, ampm);
+            Date dateArrival = dateAndTimeFormat(arriveDay, arriveTime, ampm1);
+
+            AbstractFlight flight = new Flight(flightNumber, source, dateDepature,
+                    destination, dateArrival);
+            if(isPrint){
+                System.out.println(flight.toString());
+            }
+
+            AbstractAirline airline = new Airline(name);
+            airline.addFlight(flight);
+
+            File file = new File(fileName);
+            if(!file.exists()) {
+                TextDumper textDumper = new TextDumper(fileName);
+                textDumper.dump(airline);
+            }
+            else {
+                TextDumper textDumper = new TextDumper(fileName);
+                textDumper.dump(airline);
+                TextParser textParser = new TextParser(fileName, airline);
+                textParser.parse();
+            }
+
+            PrettyPrinter prettyPrinter = new PrettyPrinter(prettyFileName);
+//            prettyPrinter.dump(airline);
+            System.out.println(flight.toString());
+            System.out.println(airline.toString());
+        }
     }
 
     /**
@@ -283,6 +377,13 @@ public class Project3 {
         return argsToCreateAirLine;
     }
 
+    /**
+     * valid data and time in 12 hours
+     * @param date users input date
+     * @param time users input time
+     * @param a am/pm
+     * @return the type date of date and time which users input
+     */
     public static Date dateAndTimeFormat(String date, String time, String a){
         Date date1 = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy hh:mm a");
@@ -302,9 +403,14 @@ public class Project3 {
         return date1;
     }
 
+    /**
+     *
+     * @param name : airport name
+     *  Sort the flights by the source
+     */
     public static void validAirportName(String name) {
         if (AirportNames.getName(name.toUpperCase()) == null) {
-            System.err.println("airport code "+ name + " is valid");
+            System.err.println("airport code "+ name + " is not valid");
             System.exit(1);
         }
     }

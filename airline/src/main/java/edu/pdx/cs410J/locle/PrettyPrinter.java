@@ -20,6 +20,9 @@ public class PrettyPrinter implements AirlineDumper {
     }
 
     @Override
+    /**
+     * dump the contents of airline to the text file
+     */
     public void dump(AbstractAirline airline) throws IOException {
         try {
             File file = new File(prettyFilename);
@@ -42,6 +45,10 @@ public class PrettyPrinter implements AirlineDumper {
         }
     }
 
+    /**
+     * create a directory for file name
+     * if directory isnot exist
+     */
     public void createDirectory(){
         String [] stringSplitSlash = prettyFilename.split("/");
         String stringPath = "";

@@ -333,16 +333,25 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
 
 
     @Override
+    /**
+     * return type date of departure
+     */
     public Date getDeparture() {
         return super.getDeparture();
     }
 
     @Override
+    /**
+     * return type date of arrival
+     */
     public Date getArrival() {
         return super.getArrival();
     }
 
     @Override
+    /**
+     *
+     */
     public int compareTo(Flight o) {
         if(this.getSource().compareTo(o.getSource()) != 0){
             return this.getSource().compareTo(o.getSource());

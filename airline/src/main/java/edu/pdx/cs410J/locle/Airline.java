@@ -57,6 +57,10 @@ public class Airline extends AbstractAirline {
         return flights;
     }
 
+    /**
+     *
+     * @return print out the collection of flight for pretty print
+     */
     public String print(){
         String printOutAirlineInfo = "Airline name: " + name + " has ";
 
@@ -69,6 +73,10 @@ public class Airline extends AbstractAirline {
         return printOutAirlineInfo;
     }
 
+    /**
+     *
+     * @return print out the collection of flights for text dumper
+     */
     public String printFlight(){
         String printOutAirlineFlight = "";
 

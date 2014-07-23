@@ -93,6 +93,13 @@ public class TextParser implements AirlineParser {
         }
     }
 
+    /**
+     * valid date and time from users input
+     * @param date user input date
+     * @param time user input time
+     * @param a user inputam/pm
+     * @return type date of valid date
+     */
     public static Date dateAndTimeFormat(String date, String time, String a){
         Date date1 = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy hh:mm a");
