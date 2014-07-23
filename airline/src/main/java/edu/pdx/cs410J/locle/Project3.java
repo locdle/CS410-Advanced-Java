@@ -2,6 +2,7 @@ package edu.pdx.cs410J.locle;
 
 import edu.pdx.cs410J.AbstractAirline;
 import edu.pdx.cs410J.AbstractFlight;
+import edu.pdx.cs410J.AirportNames;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.File;
@@ -22,6 +23,7 @@ public class Project3 {
     private static Boolean isPrint = false;
     private static Boolean isTextFile = false;
     private static Boolean isPretty = false;
+    private static Boolean isDash = false;
     private static String fileName = null;
     private static String prettyFileName = null;
 
@@ -84,7 +86,7 @@ public class Project3 {
             flight.toString();
         }
 
-         if(isPrint == true && argsToCreateAirLine.length == 10){
+         if(isPrint == true && argsToCreateAirLine.length == 10 && !isPretty && !isTextFile){
             String name = argsToCreateAirLine[0];
             String flightNumber = argsToCreateAirLine[1];
             String source = argsToCreateAirLine[2];
@@ -139,12 +141,10 @@ public class Project3 {
                 textDumper.dump(airline);
                 TextParser textParser = new TextParser(fileName, airline);
                 textParser.parse();
-
-
             }
         }
 
-        if(isPretty == true && argsToCreateAirLine.length == 10){
+        if(isPretty == true && argsToCreateAirLine.length == 10 && !isDash){
             String name = argsToCreateAirLine[0];
             String flightNumber = argsToCreateAirLine[1];
             String source = argsToCreateAirLine[2];
@@ -155,6 +155,9 @@ public class Project3 {
             String arriveDay = argsToCreateAirLine[7];
             String arriveTime = argsToCreateAirLine[8];
             String ampm1 = argsToCreateAirLine[9];
+
+            validAirportName(source);
+            validAirportName(destination);
 
             Date dateDepature = dateAndTimeFormat(departDay, departTime, ampm);
             Date dateArrival = dateAndTimeFormat(arriveDay, arriveTime, ampm1);
@@ -169,18 +172,39 @@ public class Project3 {
             airline.addFlight(flight);
             PrettyPrinter prettyPrinter = new PrettyPrinter(prettyFileName);
             prettyPrinter.dump(airline);
-//            File file = new File(prettyFileName);
-//            if(!file.exists()) {
-//                PrettyPrinter prettyPrinter = new PrettyPrinter(prettyFileName);
-//                prettyPrinter.dump(airline);
-//            }
-//            else {
-//                TextDumper textDumper = new TextDumper(fileName);
-//                textDumper.dump(airline);
-//
-//            }
         }
 
+        if(isPretty == true && argsToCreateAirLine.length == 10 && isDash){
+            String name = argsToCreateAirLine[0];
+            String flightNumber = argsToCreateAirLine[1];
+            String source = argsToCreateAirLine[2];
+            String departDay = argsToCreateAirLine[3];
+            String departTime = argsToCreateAirLine[4];
+            String ampm = argsToCreateAirLine[5];
+            String destination = argsToCreateAirLine[6];
+            String arriveDay = argsToCreateAirLine[7];
+            String arriveTime = argsToCreateAirLine[8];
+            String ampm1 = argsToCreateAirLine[9];
+
+            validAirportName(source);
+            validAirportName(destination);
+
+            Date dateDepature = dateAndTimeFormat(departDay, departTime, ampm);
+            Date dateArrival = dateAndTimeFormat(arriveDay, arriveTime, ampm1);
+
+            AbstractFlight flight = new Flight(flightNumber, source, dateDepature,
+                    destination, dateArrival);
+            if(isPrint){
+                System.out.println(flight.toString());
+            }
+
+            AbstractAirline airline = new Airline(name);
+            airline.addFlight(flight);
+            PrettyPrinter prettyPrinter = new PrettyPrinter(prettyFileName);
+//            prettyPrinter.dump(airline);
+            System.out.println(flight.toString());
+            System.out.println(airline.toString());
+        }
     }
 
     /**
@@ -224,7 +248,12 @@ public class Project3 {
             }
             if(stringList.get(i).equals("-pretty")){
                 isPretty = true;
-                prettyFileName = stringList.get(i+1);
+                if(stringList.get(i+1).startsWith("-")){
+                    isDash = true;
+                }
+                else {
+                    prettyFileName = stringList.get(i + 1);
+                }
                 stringList.remove(i);
                 stringList.remove(i);
             }
@@ -233,7 +262,12 @@ public class Project3 {
         for (int i =0; i<stringList.size(); ++i){
             if(stringList.get(i).equals("-pretty")){
                 isPretty = true;
-                prettyFileName = stringList.get(i+1);
+                if(stringList.get(i+1).startsWith("-")){
+                    isDash = true;
+                }
+                else {
+                    prettyFileName = stringList.get(i + 1);
+                }
                 stringList.remove(i);
                 stringList.remove(i);
             }
@@ -266,5 +300,12 @@ public class Project3 {
             System.exit(1);
         }
         return date1;
+    }
+
+    public static void validAirportName(String name) {
+        if (AirportNames.getName(name.toUpperCase()) == null) {
+            System.err.println("airport code "+ name + " is valid");
+            System.exit(1);
+        }
     }
 }

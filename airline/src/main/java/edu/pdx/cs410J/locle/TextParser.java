@@ -8,6 +8,9 @@ import edu.pdx.cs410J.ParserException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by locle on 7/15/14.
@@ -38,7 +41,9 @@ public class TextParser implements AirlineParser {
                     stringBuilder.append(line);
                     String[] str = stringBuilder.toString().split("\\s+");
                     try {
-                        AbstractFlight flight = new Flight(str[1], str[2], str[3], str[4], str[5], str[6], str[7]);
+                        Date departure = dateAndTimeFormat(str[3], str[4], str[5]);
+                        Date arrival = dateAndTimeFormat(str[7], str[8], str[9]);
+                        AbstractFlight flight = new Flight(str[1], str[2], departure, str[6], arrival);
                         flight.toString();
                         abstractAirline.addFlight(flight);
                         stringBuilder.append(System.lineSeparator());
@@ -73,11 +78,32 @@ public class TextParser implements AirlineParser {
      */
     public String getFileName(String fileName){
         int index = fileName.indexOf(".");
+        int index1 = fileName.lastIndexOf("/");
         if (index == -1){
             return fileName;
         }
         else{
-            return fileName.substring(0, index);
+            if(index1 == -1) {
+                return fileName.substring(0, index);
+            }
+            else{
+                return fileName.substring(index1 + 1, index);
+
+            }
         }
+    }
+
+    public static Date dateAndTimeFormat(String date, String time, String a){
+        Date date1 = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy hh:mm a");
+        String dateAndTime = date + " " + time + " " + a;
+        try{
+            date1 = dateFormat.parse(dateAndTime);
+        } catch (ParseException e) {
+
+            System.err.println("date and time are malformed " + dateAndTime);
+            System.exit(1);
+        }
+        return date1;
     }
 }

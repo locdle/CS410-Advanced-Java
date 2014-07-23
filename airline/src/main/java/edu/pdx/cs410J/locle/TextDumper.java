@@ -43,13 +43,13 @@ public class TextDumper implements edu.pdx.cs410J.AirlineDumper {
     }
 
     public void createDirectory(){
-        String [] split = fileName.split("/");
-        String filePath = "";
-        for(int i = 0; i<split.length-1;++i){
-            filePath+=split[i]+'/';
+        String [] stringSplitSlash = fileName.split("/");
+        String stringPath = "";
+        for(int i = 0; i<stringSplitSlash.length-1;++i){
+            stringPath+=stringSplitSlash[i]+'/';
         }
 
-        boolean success = (new File(filePath)).mkdirs();
+        boolean success = (new File(stringPath)).mkdirs();
     }
 
 }

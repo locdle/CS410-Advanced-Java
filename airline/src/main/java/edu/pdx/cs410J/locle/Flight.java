@@ -348,7 +348,8 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
             return this.getSource().compareTo(o.getSource());
         }
         else{
-            return this.getDepartureString().compareTo(o.getDepartureString());
+            return this.departure.toString().compareTo(o.departure.toString());
+//            return this.getDepartureString().compareTo(o.getDepartureString());
         }
     }
 

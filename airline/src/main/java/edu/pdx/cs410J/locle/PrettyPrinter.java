@@ -33,7 +33,7 @@ public class PrettyPrinter implements AirlineDumper {
                 PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(prettyFilename, true)));
                 Airline newAirline = (Airline) airline;
                 printWriter.write("\n");
-                printWriter.write(newAirline.printFlight());
+                printWriter.write(newAirline.print());
                 printWriter.close();
             }
         }

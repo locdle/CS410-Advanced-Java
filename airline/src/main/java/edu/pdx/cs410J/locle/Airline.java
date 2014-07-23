@@ -73,24 +73,18 @@ public class Airline extends AbstractAirline {
         String printOutAirlineFlight = "";
 
         for (int i=0; i<flights.size(); ++i){
+//            Flight printFLight = (Flight)flights.get(i);
+//            printOutAirlineFlight += name + " " + printFLight.getNumber()
+//                    + " " + printFLight.getSource()
+//                    + " " + printFLight.getDateDeparture()
+//                    + " " + printFLight.getTimeDeparture()
+//                    + " " + printFLight.getDestination()
+//                    + " " + printFLight.getDateArrival()
+//                    + " " + printFLight.getTimeArrival();
             Flight printFLight = (Flight)flights.get(i);
-            printOutAirlineFlight += name + " " + printFLight.getNumber()
-                    + " " + printFLight.getSource()
-                    + " " + printFLight.getDateDeparture()
-                    + " " + printFLight.getTimeDeparture()
-                    + " " + printFLight.getDestination()
-                    + " " + printFLight.getDateArrival()
-                    + " " + printFLight.getTimeArrival();
+            printOutAirlineFlight += name + " " + printFLight.toString();
         }
-//        for(Flight flight: flights){
-//            printOutAirlineFlight += name + " " + flight.getNumber()
-//                                          + " " + flight.getSource()
-//                                          + " " + flight.getDateDeparture()
-//                                          + " " + flight.getTimeDeparture()
-//                                          + " " + flight.getDestination()
-//                                          + " " + flight.getDateArrival()
-//                                          + " " + flight.getTimeArrival();
-//        }
+
         return printOutAirlineFlight;
     }
 }
