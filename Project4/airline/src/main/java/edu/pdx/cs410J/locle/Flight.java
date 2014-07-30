@@ -129,10 +129,28 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
     }
 
     public long durationTime(){
-//        long different = (this.arrival.getTime() - this.departure.getTime())/6000;
-//        return different;
-        long different = (this.getArrival().getTime() - this.getDeparture().getTime())/6000;
+        Date arrival1 = dateAndTimeFormat(arrive);
+        Date depature1 = dateAndTimeFormat(depart);
+
+        long different = (arrival1.getTime() - depature1.getTime())/6000;
         return different;
+    }
+
+    public static Date dateAndTimeFormat(String date){
+        Date date1 = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy hh:mm a");
+        try{
+            date1 = dateFormat.parse(date);
+        } catch (ParseException e) {
+
+            System.err.println("date and time are malformed " + date);
+            System.exit(1);
+        }
+        return date1;
+    }
+
+    public String print(){
+        return this.toString() +  ". And it takes " + this.durationTime() + " in minutes.\n";
     }
 
 }

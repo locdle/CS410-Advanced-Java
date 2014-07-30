@@ -25,10 +25,32 @@ public class Project4 {
     private static boolean isPrint = false;
     private static String hostName = null;
     private static String portString = null;
+    private static String print = null;
+    private static boolean isSearch = false;
 
     public static void main(String... args) {
         if(args.length ==0){
             System.err.println(MISSING_ARGS);
+            System.exit(1);
+        }
+        else  if (args.length == 1 && args[0].equals("-README")){
+            System.out.println("Loc Le - Advance Java - Project 4");
+            System.out.println("This is a  README for this project airline \n" +
+                    "The project takes options and arguments \n" +
+                    "\t options are \n" +
+                    "\t\t-host hostname    Host computer on which the server runs \n" +
+                    "\t\t-port port        Port on which the server is listening \n" +
+                    "\t\t-search           Search for flights \n" +
+                    "\t\t-print            Prints descriptions of the new flight \n" +
+                    "\t\t-README           Prints a README for this project and exits \n" +
+                    "\t args are \n" +
+                    "\t\t name:          the name of the airline \n" +
+                    "\t\t flightNumber:  the flight number\n" +
+                    "\t\t src:           three-letter code of departure airport\n" +
+                    "\t\t departTime:    departure date and time (24-hour time)\n" +
+                    "\t\t dest:          three-letter code of arrival airport\n" +
+                    "\t\t arriveTime:    arrival date and time (24-hour time)");
+
             System.exit(1);
         }
         else {
@@ -36,6 +58,7 @@ public class Project4 {
 //            String portString = null;
             String key = null;
             String value = null;
+            System.out.println("search should be false " + isSearch);
 
             String airline = null;
             String flightNumber = null;
@@ -75,6 +98,7 @@ public class Project4 {
 //            }
             String[] argsToCreateAirLine = parseCommandLine(args);
 
+
             if (hostName == null) {
                 usage(MISSING_ARGS);
 
@@ -82,10 +106,10 @@ public class Project4 {
                 usage("Missing port");
             }
 
-            if (argsToCreateAirLine.length < 10) {
-                System.err.println("Missing arguments to create an airline");
-                System.exit(1);
-            }
+//            if (argsToCreateAirLine.length < 10) {
+//                System.err.println("Missing arguments to create an airline");
+//                System.exit(1);
+//            }
 
             for (String str : argsToCreateAirLine) {
                 if (airline == null) {
@@ -120,10 +144,13 @@ public class Project4 {
             String arrival = dateAndTimeFormatInString(arriveDay, arriveTime, ampm1);
 
             Flight flight = new Flight(flightNumber, src, departure, destination, arrival);
+            if(isPrint){
+                System.out.println(flight.print());
+            }
             AbstractAirline abstractAirline = new Airline(airline);
             abstractAirline.addFlight(flight);
             Airline airline1 = (Airline)abstractAirline;
-            System.out.println(airline1.print());
+//            System.out.println(airline1.print());
             int port;
             try {
                 port = Integer.parseInt(portString);
@@ -151,8 +178,15 @@ public class Project4 {
 //            }
 
 
-                response = client.addFlight(airline, flightNumber, src, departure, destination, arrival);
+//                if(isPrint){
+////                    response = client.printFlight(airline, flightNumber, src, departure, destination, arrival, print);
+//                    response = client.printTheFlight(airline, print);
+//                }
+//                else {
+//                    response = client.addFlight(airline, flightNumber, src, departure, destination, arrival);
+//                }
 
+                response = client.addFlight(airline, flightNumber, src, departure, destination, arrival);
 
                 checkResponseCode(HttpURLConnection.HTTP_OK, response);
 
@@ -211,6 +245,7 @@ public class Project4 {
         System.exit(1);
     }
 
+
     /**
      * valid data and time in 12 hours
      * @param date users input date
@@ -251,23 +286,35 @@ public class Project4 {
                 stringList.remove(i);
             }
             if(stringList.get(i).equals("-host")){
+//                stringList.remove(i);
+                hostName = stringList.get(i+1);
                 stringList.remove(i);
-                hostName = stringList.get(i);
                 stringList.remove(i);
             }
             if(stringList.get(i).equals("-port")){
+//                stringList.remove(i);
+                portString = stringList.get(i+1);
                 stringList.remove(i);
-                portString = stringList.get(i);
                 stringList.remove(i);
             }
             if(stringList.get(i).equals("-print")){
                 isPrint = true;
+                print = "print";
+                stringList.remove(i);
+            }
+            if(stringList.get(i).equals("-search")){
+                isSearch = true;
                 stringList.remove(i);
             }
 
         }
 
+        System.out.println(isSearch);
+
         String[] argsToCreateAirLine =  stringList.toArray( new String[stringList.size()] );
+//        for (int i =0; i< argsToCreateAirLine.length; ++i){
+//            System.out.println(argsToCreateAirLine[i]);
+//        }
         return argsToCreateAirLine;
     }
 

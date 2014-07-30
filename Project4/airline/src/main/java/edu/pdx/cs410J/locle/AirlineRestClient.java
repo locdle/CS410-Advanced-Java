@@ -48,12 +48,22 @@ public class AirlineRestClient extends HttpRequestHelper
         return post( this.url, "key", key, "value", value );
     }
 
-    public Response printFlight(String airline) throws IOException {
-        return post(this.url, "airline", airline);
+//    public Response printFlight(String airline, String flightNumber, String src, String departTime, String dest, String arriveTime,String print) throws IOException {
+//        return post(this.url, "name", airline, "flightNumber",flightNumber, "src", src, "departTime", departTime,
+//                "dest", dest, "arriveTime", arriveTime, "print", print);
+//    }
+
+    public Response printTheFlight(String airline, String print) throws IOException {
+        return get(this.url, "name", airline, "print", print);
     }
 
+    public Response searchFlight(String airline, String src, String dest) throws IOException{
+        return get(this.url, "name", airline, "src", src, "dest", dest);
+    }
+
+
     public Response addFlight(String airline, String flightNumber, String src, String departTime, String dest, String arriveTime) throws IOException{
-        return post(this.url, "airline", airline, "flightNumber", flightNumber, "src", src, "departTime", departTime,
+        return post(this.url, "name", airline, "flightNumber", flightNumber, "src", src, "departTime", departTime,
                                 "dest", dest, "arriveTime", arriveTime);
     }
 }

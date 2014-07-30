@@ -36,7 +36,7 @@ public class Airline extends AbstractAirline {
      */
     public void addFlight(AbstractFlight flight) {
         flights.add((Flight)flight);
-        Collections.sort(flights);
+//        Collections.sort(flights);
     }
 
     @Override
@@ -52,12 +52,12 @@ public class Airline extends AbstractAirline {
      * @return print out the collection of flight for pretty print
      */
     public String print(){
-        String printOutAirlineInfo = "Airline name: " + name + " has ";
+        String printOutAirlineInfo = "Airline name: " + name + " has : \n";
 
         for(int i=0; i<flights.size(); ++i){
-            printOutAirlineInfo += flights.get(i).toString(); /* + ". And it takes " + flights.get(i).durationTime() + " in minutes";*/
+            printOutAirlineInfo += "\t" + flights.get(i).toString()  + ". And it takes " + flights.get(i).durationTime() + " in minutes.\n";
         }
-
+        System.out.println();
         return printOutAirlineInfo;
     }
 
