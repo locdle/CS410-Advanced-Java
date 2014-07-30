@@ -10,6 +10,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The AirlineServlet extend from the HTTPServlet
+ * it can do get and post on the server
+ */
 public class AirlineServlet extends HttpServlet
 {
     private final Map<String, String> data = new HashMap<String, String>();
@@ -17,6 +21,10 @@ public class AirlineServlet extends HttpServlet
     private Airline airline = null;
 
     @Override
+    /**
+     * get the content from the servlet
+     * base on the matching keyword
+     */
     protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
         response.setContentType( "text/plain" );
@@ -27,10 +35,13 @@ public class AirlineServlet extends HttpServlet
 
 
 
-        if(name == null){
+        if(airlineMap.get(name) == null){
+            PrintWriter pw = response.getWriter();
+            pw.println("The airline " + name + " doesn't exist");
             System.err.println("The airline " + name + " doesn't exist");
             return;
         }
+
 
         if(name != null && src == null && dest == null) {
 //        writeAllMappings(response);
@@ -43,12 +54,16 @@ public class AirlineServlet extends HttpServlet
     }
 
     @Override
+    /**
+     * post new data to the servlet
+     * it can post new airline to the servlet
+     * and it can add more flights to the exist airline
+     */
     protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
         response.setContentType( "text/plain" );
 
         String flightNumber = getParameter("flightNumber", request);
-        System.out.println("flight number is " + flightNumber);
         if (flightNumber == null){
             missingRequiredParameter(response, flightNumber);
             return;
@@ -56,28 +71,24 @@ public class AirlineServlet extends HttpServlet
 
 
         String src = getParameter("src", request);
-        System.out.println("src " + src);
         if (src == null){
             missingRequiredParameter(response, src);
             return;
         }
 
         String departTime = getParameter("departTime", request);
-        System.out.println("depart " + departTime);
         if (departTime == null){
             missingRequiredParameter(response, departTime);
             return;
         }
 
         String dest = getParameter("dest", request);
-        System.out.println("dest " + dest);
         if (dest == null){
             missingRequiredParameter(response, dest);
             return;
         }
 
         String arriveTime = getParameter("arriveTime", request);
-        System.out.println("arrive " + arriveTime);
         if (arriveTime == null){
             missingRequiredParameter(response, arriveTime);
             return;
@@ -90,7 +101,7 @@ public class AirlineServlet extends HttpServlet
             missingRequiredParameter(response, name);
             return;
         }
-//        System.out.println(this.airlineMap.get(airline));
+
         if (this.airlineMap.get(name) == null){
 
             Airline airline1 = new Airline(name);
@@ -103,8 +114,6 @@ public class AirlineServlet extends HttpServlet
             this.airlineMap.put(name, this.airline);
         }
 
-//        System.out.println(this.airlineMap.get(airline));
-
 //        PrintWriter pw = response.getWriter();
 //        pw.println(Messages.mappedKeyValue(flightNumber, name));
 //        pw.flush();
@@ -112,6 +121,12 @@ public class AirlineServlet extends HttpServlet
         response.setStatus( HttpServletResponse.SC_OK);
     }
 
+    /**
+     * David's method
+     * @param response
+     * @param key
+     * @throws IOException
+     */
     private void missingRequiredParameter( HttpServletResponse response, String key )
         throws IOException
     {
@@ -122,6 +137,12 @@ public class AirlineServlet extends HttpServlet
         response.setStatus( HttpServletResponse.SC_PRECONDITION_FAILED );
     }
 
+    /**
+     * David's method
+     * @param key
+     * @param response
+     * @throws IOException
+     */
     private void writeValue( String key, HttpServletResponse response ) throws IOException
     {
         String value = this.data.get(key);
@@ -135,6 +156,11 @@ public class AirlineServlet extends HttpServlet
         response.setStatus( HttpServletResponse.SC_OK );
     }
 
+    /**
+     * David's method
+     * @param response
+     * @throws IOException
+     */
     private void writeAllMappings( HttpServletResponse response ) throws IOException
     {
         PrintWriter pw = response.getWriter();
@@ -156,6 +182,12 @@ public class AirlineServlet extends HttpServlet
         response.setStatus( HttpServletResponse.SC_OK );
     }
 
+    /**
+     * write all the content of flights of airline to the servlet
+     * @param name : of the airline
+     * @param response
+     * @throws IOException
+     */
     private void writeAirline(String name, HttpServletResponse response) throws IOException{
         PrintWriter pw = response.getWriter();
         pw.println(Messages.getMappingAirlineCount( airlineMap.size() ));
@@ -168,23 +200,40 @@ public class AirlineServlet extends HttpServlet
 
     }
 
+    /**
+     * write the matching of flight of airline to the servlet
+     * @param name
+     * @param src
+     * @param dest
+     * @param response
+     * @throws IOException
+     */
     private void writeSearch(String name, String src, String dest, HttpServletResponse response) throws IOException{
         PrintWriter pw = response.getWriter();
 
         Airline airline1 = this.airlineMap.get(name);
         Collection flights = airline1.getFlights();
+        boolean found = false;
 
         for(Object obj:flights){
             if(src.equals(((Flight)obj).getSource()) && dest.equals(((Flight)obj).getDestination())){
                 pw.println(((Flight) obj).print());
+                found = true;
             }
-            else{
-                pw.println("There is no flight from " + src + " to " + dest);
-            }
+        }
+
+        if(!found){
+            pw.println("There is no flight from " + src + " to " + dest);
         }
     }
 
 
+    /**
+     * get the value of parameter from the client
+     * @param name : of the airline
+     * @param request
+     * @return
+     */
     private String getParameter(String name, HttpServletRequest request) {
       String value = request.getParameter(name);
       if (value == null || "".equals(value)) {

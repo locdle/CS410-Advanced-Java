@@ -53,12 +53,66 @@ public class Project4 {
 
             System.exit(1);
         }
+        else if(args.length < 9){
+            String airline = null;
+            String src = null;
+            String destination = null;
+
+            String[] argsToSearch = parseCommandLine(args);
+
+            if (hostName == null) {
+                usage(MISSING_ARGS);
+
+            } else if (portString == null) {
+                usage("Missing port");
+            }
+
+            for(String str: argsToSearch){
+                if(airline == null){
+                    airline = str;
+                }
+                else if(src == null){
+                    src = str;
+                }
+                else if(destination == null){
+                    destination = str;
+                }
+                else{
+                    System.err.println("Too many argument for searching flights");
+                    System.exit(1);
+                }
+            }
+
+            int port;
+            try {
+                port = Integer.parseInt(portString);
+
+            } catch (NumberFormatException ex) {
+                usage("Port \"" + portString + "\" must be an integer");
+                return;
+            }
+
+            AirlineRestClient client = new AirlineRestClient(hostName, port);
+
+            HttpRequestHelper.Response response;
+            try{
+                response = client.searchFlight(airline, src, destination);
+            }catch (IOException ex) {
+                error("While contacting server: " + ex);
+                return;
+            }
+
+            System.out.println(response.getContent());
+
+            System.exit(0);
+
+
+        }
         else {
 //            String hostName = null;
 //            String portString = null;
-            String key = null;
-            String value = null;
-            System.out.println("search should be false " + isSearch);
+
+
 
             String airline = null;
             String flightNumber = null;
@@ -71,31 +125,6 @@ public class Project4 {
             String arriveTime = null;
             String ampm1 = null;
 
-//        for (String arg : args) {
-//            if (hostName == null) {
-//                hostName = arg;
-//
-//            } else if ( portString == null) {
-//                portString = arg;
-//
-//            } else if (key == null) {
-//                key = arg;
-//
-//            } else if (value == null) {
-//                value = arg;
-//
-//            } else {
-//                usage("Extraneous command line argument: " + arg);
-//            }
-//        }
-
-//            if (args[0] != null && hostName == null) {
-//                hostName = args[0];
-//            }
-//
-//            if (args[1] != null && portString == null) {
-//                portString = args[1];
-//            }
             String[] argsToCreateAirLine = parseCommandLine(args);
 
 
@@ -133,7 +162,8 @@ public class Project4 {
                 } else if (ampm1 == null) {
                     ampm1 = str;
                 } else {
-                    usage("Extraneous command line argument: " + str);
+                    System.err.println("Too many argument to create airline");
+                    System.exit(1);
                 }
             }
 
@@ -144,9 +174,17 @@ public class Project4 {
             String arrival = dateAndTimeFormatInString(arriveDay, arriveTime, ampm1);
 
             Flight flight = new Flight(flightNumber, src, departure, destination, arrival);
+
+            if(isPrint && isSearch){
+                System.err.println("Can't handle both print and search in the same time");
+                System.exit(1);
+            }
+
             if(isPrint){
                 System.out.println(flight.print());
             }
+
+
             AbstractAirline abstractAirline = new Airline(airline);
             abstractAirline.addFlight(flight);
             Airline airline1 = (Airline)abstractAirline;
@@ -164,28 +202,6 @@ public class Project4 {
 
             HttpRequestHelper.Response response;
             try {
-//            if (key == null) {
-//                // Print all key/value pairs
-//                response = client.getAllKeysAndValues();
-//
-//            } else if (value == null) {
-//                // Print all values of key
-//                response = client.getValues(key);
-//
-//            } else {
-//                // Post the key/value pair
-//                response = client.addKeyValuePair(key, value);
-//            }
-
-
-//                if(isPrint){
-////                    response = client.printFlight(airline, flightNumber, src, departure, destination, arrival, print);
-//                    response = client.printTheFlight(airline, print);
-//                }
-//                else {
-//                    response = client.addFlight(airline, flightNumber, src, departure, destination, arrival);
-//                }
-
                 response = client.addFlight(airline, flightNumber, src, departure, destination, arrival);
 
                 checkResponseCode(HttpURLConnection.HTTP_OK, response);
@@ -214,6 +230,10 @@ public class Project4 {
         }
     }
 
+    /**
+     * David's function
+     * @param message
+     */
     private static void error( String message )
     {
         PrintStream err = System.err;
@@ -286,13 +306,11 @@ public class Project4 {
                 stringList.remove(i);
             }
             if(stringList.get(i).equals("-host")){
-//                stringList.remove(i);
                 hostName = stringList.get(i+1);
                 stringList.remove(i);
                 stringList.remove(i);
             }
             if(stringList.get(i).equals("-port")){
-//                stringList.remove(i);
                 portString = stringList.get(i+1);
                 stringList.remove(i);
                 stringList.remove(i);
@@ -308,13 +326,7 @@ public class Project4 {
             }
 
         }
-
-        System.out.println(isSearch);
-
         String[] argsToCreateAirLine =  stringList.toArray( new String[stringList.size()] );
-//        for (int i =0; i< argsToCreateAirLine.length; ++i){
-//            System.out.println(argsToCreateAirLine[i]);
-//        }
         return argsToCreateAirLine;
     }
 
