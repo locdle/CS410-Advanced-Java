@@ -251,16 +251,20 @@ public class Project4 {
         PrintStream err = System.err;
         err.println("** " + message);
         err.println();
-        err.println("usage: java Project4 host port [key] [value]");
-        err.println("  host    Host of web server");
-        err.println("  port    Port of web server");
-        err.println("  key     Key to query");
-        err.println("  value   Value to add to server");
-        err.println();
-        err.println("This simple program posts key/value pairs to the server");
-        err.println("If no value is specified, then all values are printed");
-        err.println("If no key is specified, all key/value pairs are printed");
-        err.println();
+        err.println("The project takes options and arguments \n" +
+                "\t options are \n" +
+                        "\t\t-host hostname    Host computer on which the server runs \n" +
+                        "\t\t-port port        Port on which the server is listening \n" +
+                        "\t\t-search           Search for flights \n" +
+                        "\t\t-print            Prints descriptions of the new flight \n" +
+                        "\t\t-README           Prints a README for this project and exits \n" +
+                        "\t args are \n" +
+                        "\t\t name:          the name of the airline \n" +
+                        "\t\t flightNumber:  the flight number\n" +
+                        "\t\t src:           three-letter code of departure airport\n" +
+                        "\t\t departTime:    departure date and time (24-hour time)\n" +
+                        "\t\t dest:          three-letter code of arrival airport\n" +
+                        "\t\t arriveTime:    arrival date and time (24-hour time)");
 
         System.exit(1);
     }
