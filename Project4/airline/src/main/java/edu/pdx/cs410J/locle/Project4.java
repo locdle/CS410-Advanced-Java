@@ -304,34 +304,72 @@ public class Project4 {
             }
         }
 
+//        for (int i =0; i<stringList.size(); ++i){
+//            if(stringList.get(i).equals("-README")){
+//                isReadme = true;
+//                stringList.remove(i);
+//            }
+//            else if(stringList.get(i).equals("-host")){
+//                hostName = stringList.get(i+1);
+//                stringList.remove(i);
+//                stringList.remove(i);
+//            }
+//            else if(stringList.get(i).equals("-port")){
+//                portString = stringList.get(i+1);
+//                stringList.remove(i);
+//                stringList.remove(i);
+//            }
+//            else if(stringList.get(i).equals("-print")){
+//                isPrint = true;
+//                print = "print";
+//                stringList.remove(i);
+//            }
+//            else if(stringList.get(i).equals("-search")){
+//                isSearch = true;
+//                stringList.remove(i);
+//            }
+//
+//        }
+
         for (int i =0; i<stringList.size(); ++i){
-            if(stringList.get(i).equals("-README")){
-                isReadme = true;
-                stringList.remove(i);
-            }
             if(stringList.get(i).equals("-host")){
                 hostName = stringList.get(i+1);
                 stringList.remove(i);
                 stringList.remove(i);
+                break;
             }
+        }
+
+        for (int i = 0; i <stringList.size() ; i++) {
             if(stringList.get(i).equals("-port")){
                 portString = stringList.get(i+1);
                 stringList.remove(i);
                 stringList.remove(i);
+                break;
             }
-            if(stringList.get(i).equals("-print")){
-                isPrint = true;
-                print = "print";
-                stringList.remove(i);
-            }
+        }
+
+        for (int i = 0; i <stringList.size() ; i++) {
             if(stringList.get(i).equals("-search")){
                 isSearch = true;
                 stringList.remove(i);
+                break;
             }
-
         }
+
+        for (int i = 0; i <stringList.size() ; i++) {
+            if(stringList.get(i).equals("-print")){
+                isPrint = true;
+                stringList.remove(i);
+                break;
+            }
+        }
+
+
+
         String[] argsToCreateAirLine =  stringList.toArray( new String[stringList.size()] );
         return argsToCreateAirLine;
+
     }
 
     /**
