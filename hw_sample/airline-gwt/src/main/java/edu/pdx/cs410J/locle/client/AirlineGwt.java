@@ -168,16 +168,180 @@ public class AirlineGwt implements EntryPoint {
                       flexTable.setText(row, 4, destination);
                       flexTable.setText(row, 5, arrival);
 
+                      StringBuilder sb = new StringBuilder( result.toString() );
+                      Collection<AbstractFlight> flights = result.getFlights();
+                      for ( AbstractFlight flight : flights ) {
+                          sb.append(flight);
+                          sb.append("\n");
+                      }
+                      Window.alert( sb.toString() );
+
                   }
               });
           }
       });
       verticalPanel.add(addFlight);
 
+
+
+      VerticalPanel verticalPanel1 = new VerticalPanel();
+      verticalPanel1.add(new Label("AIRLINE NAME"));
+      final TextBox seachAirlineName = new TextBox();
+      verticalPanel1.add(seachAirlineName);
+      verticalPanel1.add(new Label("DEPARTING AIRPORT"));
+      final TextBox searchSrc = new TextBox();
+      verticalPanel1.add(searchSrc);
+      verticalPanel1.add(new Label("ARRIVING AIRPORT"));
+      final TextBox searchDest = new TextBox();
+      verticalPanel1.add(searchDest);
+      Button search = new Button("SEARCH");
+      search.addClickHandler(new ClickHandler() {
+          @Override
+          public void onClick(ClickEvent event) {
+              PingServiceAsync async = GWT.create(PingService.class);
+              String name = seachAirlineName.getText();
+              String src1 = searchSrc.getText();
+              if (AirportNames.getName(src1.toUpperCase()) == null) {
+                  Window.alert("airport code "+ src1 + " is not valid");
+                  return;
+              }
+              String dest1 = searchDest.getText();
+              if (AirportNames.getName(dest1.toUpperCase()) == null) {
+                  Window.alert("airport code "+ dest1 + " is not valid");
+                  return;
+              }
+              async.searchFlight(name, src1, dest1, new AsyncCallback<AbstractAirline>() {
+                  @Override
+                  public void onFailure(Throwable caught) {
+                      Window.alert(caught.toString());
+                  }
+
+                  @Override
+                  public void onSuccess(AbstractAirline result) {
+                    Window.alert("get here");
+                  }
+              });
+
+
+          }
+      });
+      verticalPanel1.add(search);
+
+      VerticalPanel verticalPanel2 = new VerticalPanel();
+      verticalPanel2.add(new Label("AIRLINE NAME"));
+      final TextBox seachAirlineNameInfo = new TextBox();
+      verticalPanel2.add(seachAirlineNameInfo);
+      verticalPanel2.add(new Label("DEPARTING AIRPORT"));
+      final TextBox searchSrcInfo = new TextBox();
+      verticalPanel2.add(searchSrcInfo);
+      verticalPanel2.add(new Label("ARRIVING AIRPORT"));
+      final TextBox searchDestInfo = new TextBox();
+      verticalPanel2.add(searchDestInfo);
+      Button search1 = new Button("SEARCH");
+      search1.addClickHandler(new ClickHandler() {
+          @Override
+          public void onClick(ClickEvent event) {
+              PingServiceAsync async = GWT.create(PingService.class);
+              String name = seachAirlineNameInfo.getText();
+              String src1 = searchSrcInfo.getText();
+              if (AirportNames.getName(src1.toUpperCase()) == null) {
+                  Window.alert("airport code " + src1 + " is not valid");
+                  return;
+              }
+              String dest1 = searchDestInfo.getText();
+              if (AirportNames.getName(dest1.toUpperCase()) == null) {
+                  Window.alert("airport code " + dest1 + " is not valid");
+                  return;
+              }
+              async.searchAFlight(name, src1, dest1, new AsyncCallback<AbstractFlight>() {
+                  @Override
+                  public void onFailure(Throwable caught) {
+                      Window.alert(caught.toString());
+                  }
+
+                  @Override
+                  public void onSuccess(AbstractFlight result) {
+                      if(result != null) {
+                          Window.alert(result.toString());
+                      }
+                      else{
+                          Window.alert("There are no flight matching in the server");
+                      }
+                  }
+              });
+          }
+      });
+//      search1.addClickHandler(new ClickHandler() {
+//          @Override
+//          public void onClick(ClickEvent event) {
+//              PingServiceAsync async = GWT.create(PingService.class);
+//              String name = seachAirlineNameInfo.getText();
+//              String src1 = searchSrcInfo.getText();
+//              if (AirportNames.getName(src1.toUpperCase()) == null) {
+//                  Window.alert("airport code " + src1 + " is not valid");
+//                  return;
+//              }
+//              String dest1 = searchDestInfo.getText();
+//              if (AirportNames.getName(dest1.toUpperCase()) == null) {
+//                  Window.alert("airport code " + dest1 + " is not valid");
+//                  return;
+//              }
+//              async.searchFlight(name, src1, dest1, new AsyncCallback<AbstractAirline>() {
+//                  @Override
+//                  public void onFailure(Throwable caught) {
+//                      Window.alert(caught.toString());
+//                  }
+//
+//                  @Override
+//                  public void onSuccess(AbstractAirline result) {
+//                      Window.alert("get here");
+//                  }
+//              });
+//
+//
+//          }
+//      });
+      verticalPanel2.add(search1);
+
+      Button readMe = new Button("Help");
+      readMe.addClickHandler(new ClickHandler() {
+          @Override
+          public void onClick(ClickEvent clickEvent) {
+              Window.setTitle("Read Me");
+              Window.alert("Loc Le - Advance Java - Project 5 \n" +
+                      "This is a  README for this project airline \n" +
+                      "The project takes options and arguments \n" +
+                      "\t options are \n" +
+                      "\t\t-host hostname    Host computer on which the server runs \n" +
+                      "\t\t-port port        Port on which the server is listening \n" +
+                      "\t\t-search           Search for flights \n" +
+                      "\t\t-print            Prints descriptions of the new flight \n" +
+                      "\t\t-README           Prints a README for this project and exits \n" +
+                      "\t args are \n" +
+                      "\t\t name:          the name of the airline \n" +
+                      "\t\t flightNumber:  the flight number\n" +
+                      "\t\t source:           three-letter code of departure airport\n" +
+                      "\t\t departTime:    departure date and time (24-hour time)\n" +
+                      "\t\t dest:          three-letter code of arrival airport\n" +
+                      "\t\t arriveTime:    arrival date and time (24-hour time)");
+          }
+      });
+
+      DecoratorPanel decoratorPanelForAddFlight = new DecoratorPanel();
+      decoratorPanelForAddFlight.add(verticalPanel);
+      DecoratorPanel decoratorPanel1 = new DecoratorPanel();
+      decoratorPanel1.add(verticalPanel1);
+      DecoratorPanel decoratorPanel2 = new DecoratorPanel();
+      decoratorPanel2.add(flexTable);
+      DecoratorPanel decoratorPanel3 = new DecoratorPanel();
+      decoratorPanel3.add(verticalPanel2);
+
+
       RootPanel rootPanel = RootPanel.get();
-//      rootPanel.add(button);
-//      rootPanel.add(panel, 100, 100);
-      rootPanel.add(flexTable, 200, 100);
-      rootPanel.add(verticalPanel, 0, 100);
+      rootPanel.add(readMe, 10, 35);
+      rootPanel.add(decoratorPanelForAddFlight, 0, Window.getClientHeight()/10);
+      rootPanel.add(decoratorPanel1, Window.getClientWidth()/6, Window.getClientHeight()/10);
+      rootPanel.add(decoratorPanel2, Window.getClientWidth()/3, Window.getClientHeight()/10);
+      rootPanel.add(decoratorPanel3, Window.getClientWidth()/6, Window.getClientHeight()/2);
   }
 }
