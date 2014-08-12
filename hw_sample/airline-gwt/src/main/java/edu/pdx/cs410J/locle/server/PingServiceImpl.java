@@ -52,16 +52,17 @@ public class PingServiceImpl extends RemoteServiceServlet implements PingService
 
     @Override
     public AbstractAirline searchFlight(String name, String src, String dest) {
+        Airline airlineFound = new Airline(name);
         Airline airline = airlineMap.get(name);
         Collection flights = airline.getFlights();
-        boolean found = false;
+//        boolean found = false;
         for(Object obj:flights){
             if(src.equals(((Flight)obj).getSource()) && dest.equals(((Flight)obj).getDestination())){
-                found = true;
-//                Window.alert(obj.toString());
+//                found = true;
+                  airlineFound.addFlight((Flight)obj);
             }
         }
-        return null;
+        return airlineFound;
     }
 
     @Override

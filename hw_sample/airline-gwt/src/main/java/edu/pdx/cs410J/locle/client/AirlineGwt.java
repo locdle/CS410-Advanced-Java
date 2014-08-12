@@ -159,22 +159,42 @@ public class AirlineGwt implements EntryPoint {
 
                   @Override
                   public void onSuccess(AbstractAirline result) {
-                      int row = flexTable.getRowCount() + 1;
+                      flexTable.removeAllRows();
+                      flexTable.setText(0, 0, "Airline Name ");
+                      flexTable.setText(0, 1, "Flight Number");
+                      flexTable.setText(0, 2, "Departing Airport");
+                      flexTable.setText(0, 3, "Departing Date & Time");
+                      flexTable.setText(0, 4, "Arriving Airport");
+                      flexTable.setText(0, 5, "Arriving Date & Time");
 
-                      flexTable.setText(row, 0, airline);
-                      flexTable.setText(row, 1, number);
-                      flexTable.setText(row, 2, src);
-                      flexTable.setText(row, 3, departTime);
-                      flexTable.setText(row, 4, destination);
-                      flexTable.setText(row, 5, arrival);
-
-                      StringBuilder sb = new StringBuilder( result.toString() );
                       Collection<AbstractFlight> flights = result.getFlights();
-                      for ( AbstractFlight flight : flights ) {
-                          sb.append(flight);
-                          sb.append("\n");
+
+                      for(AbstractFlight flight:flights){
+                          int row = flexTable.getRowCount() + 1;
+                          flexTable.setText(row, 0, result.getName());
+                          flexTable.setText(row, 1, Integer.toString(flight.getNumber()));
+                          flexTable.setText(row, 2, flight.getSource());
+                          flexTable.setText(row, 3, flight.getDepartureString());
+                          flexTable.setText(row, 4, flight.getDestination());
+                          flexTable.setText(row, 5, flight.getArrivalString());
                       }
-                      Window.alert( sb.toString() );
+
+//                      int row = flexTable.getRowCount() + 1;
+
+//                      flexTable.setText(row, 0, airline);
+//                      flexTable.setText(row, 1, number);
+//                      flexTable.setText(row, 2, src);
+//                      flexTable.setText(row, 3, departTime);
+//                      flexTable.setText(row, 4, destination);
+//                      flexTable.setText(row, 5, arrival);
+//
+//                      StringBuilder sb = new StringBuilder( result.toString() );
+//                      Collection<AbstractFlight> flights = result.getFlights();
+//                      for ( AbstractFlight flight : flights ) {
+//                          sb.append(flight);
+//                          sb.append("\n");
+//                      }
+//                      Window.alert( sb.toString() );
 
                   }
               });
@@ -218,7 +238,20 @@ public class AirlineGwt implements EntryPoint {
 
                   @Override
                   public void onSuccess(AbstractAirline result) {
-                    Window.alert("get here");
+                    if(result.getFlights().size() ==0){
+                        Window.alert("There are no flight matching in the server");
+                    }
+                      else {
+                        StringBuilder sb = new StringBuilder( result.toString() );
+                        Collection<AbstractFlight> flights = result.getFlights();
+                        for ( AbstractFlight flight : flights ) {
+                            sb.append(flight);
+                            sb.append("\n");
+                        }
+                        Window.alert( sb.toString() );
+                    }
+
+//                      Window.alert("get here");
                   }
               });
 
@@ -227,50 +260,17 @@ public class AirlineGwt implements EntryPoint {
       });
       verticalPanel1.add(search);
 
-      VerticalPanel verticalPanel2 = new VerticalPanel();
-      verticalPanel2.add(new Label("AIRLINE NAME"));
-      final TextBox seachAirlineNameInfo = new TextBox();
-      verticalPanel2.add(seachAirlineNameInfo);
-      verticalPanel2.add(new Label("DEPARTING AIRPORT"));
-      final TextBox searchSrcInfo = new TextBox();
-      verticalPanel2.add(searchSrcInfo);
-      verticalPanel2.add(new Label("ARRIVING AIRPORT"));
-      final TextBox searchDestInfo = new TextBox();
-      verticalPanel2.add(searchDestInfo);
-      Button search1 = new Button("SEARCH");
-      search1.addClickHandler(new ClickHandler() {
-          @Override
-          public void onClick(ClickEvent event) {
-              PingServiceAsync async = GWT.create(PingService.class);
-              String name = seachAirlineNameInfo.getText();
-              String src1 = searchSrcInfo.getText();
-              if (AirportNames.getName(src1.toUpperCase()) == null) {
-                  Window.alert("airport code " + src1 + " is not valid");
-                  return;
-              }
-              String dest1 = searchDestInfo.getText();
-              if (AirportNames.getName(dest1.toUpperCase()) == null) {
-                  Window.alert("airport code " + dest1 + " is not valid");
-                  return;
-              }
-              async.searchAFlight(name, src1, dest1, new AsyncCallback<AbstractFlight>() {
-                  @Override
-                  public void onFailure(Throwable caught) {
-                      Window.alert(caught.toString());
-                  }
-
-                  @Override
-                  public void onSuccess(AbstractFlight result) {
-                      if(result != null) {
-                          Window.alert(result.toString());
-                      }
-                      else{
-                          Window.alert("There are no flight matching in the server");
-                      }
-                  }
-              });
-          }
-      });
+//      VerticalPanel verticalPanel2 = new VerticalPanel();
+//      verticalPanel2.add(new Label("AIRLINE NAME"));
+//      final TextBox seachAirlineNameInfo = new TextBox();
+//      verticalPanel2.add(seachAirlineNameInfo);
+//      verticalPanel2.add(new Label("DEPARTING AIRPORT"));
+//      final TextBox searchSrcInfo = new TextBox();
+//      verticalPanel2.add(searchSrcInfo);
+//      verticalPanel2.add(new Label("ARRIVING AIRPORT"));
+//      final TextBox searchDestInfo = new TextBox();
+//      verticalPanel2.add(searchDestInfo);
+//      Button search1 = new Button("SEARCH");
 //      search1.addClickHandler(new ClickHandler() {
 //          @Override
 //          public void onClick(ClickEvent event) {
@@ -286,22 +286,25 @@ public class AirlineGwt implements EntryPoint {
 //                  Window.alert("airport code " + dest1 + " is not valid");
 //                  return;
 //              }
-//              async.searchFlight(name, src1, dest1, new AsyncCallback<AbstractAirline>() {
+//              async.searchAFlight(name, src1, dest1, new AsyncCallback<AbstractFlight>() {
 //                  @Override
 //                  public void onFailure(Throwable caught) {
 //                      Window.alert(caught.toString());
 //                  }
 //
 //                  @Override
-//                  public void onSuccess(AbstractAirline result) {
-//                      Window.alert("get here");
+//                  public void onSuccess(AbstractFlight result) {
+//                      if(result != null) {
+//                          Window.alert(result.toString());
+//                      }
+//                      else{
+//                          Window.alert("There are no flight matching in the server");
+//                      }
 //                  }
 //              });
-//
-//
 //          }
 //      });
-      verticalPanel2.add(search1);
+//      verticalPanel2.add(search1);
 
       Button readMe = new Button("Help");
       readMe.addClickHandler(new ClickHandler() {
@@ -333,8 +336,8 @@ public class AirlineGwt implements EntryPoint {
       decoratorPanel1.add(verticalPanel1);
       DecoratorPanel decoratorPanel2 = new DecoratorPanel();
       decoratorPanel2.add(flexTable);
-      DecoratorPanel decoratorPanel3 = new DecoratorPanel();
-      decoratorPanel3.add(verticalPanel2);
+//      DecoratorPanel decoratorPanel3 = new DecoratorPanel();
+//      decoratorPanel3.add(verticalPanel2);
 
 
       RootPanel rootPanel = RootPanel.get();
@@ -342,6 +345,6 @@ public class AirlineGwt implements EntryPoint {
       rootPanel.add(decoratorPanelForAddFlight, 0, Window.getClientHeight()/10);
       rootPanel.add(decoratorPanel1, Window.getClientWidth()/6, Window.getClientHeight()/10);
       rootPanel.add(decoratorPanel2, Window.getClientWidth()/3, Window.getClientHeight()/10);
-      rootPanel.add(decoratorPanel3, Window.getClientWidth()/6, Window.getClientHeight()/2);
+//      rootPanel.add(decoratorPanel3, Window.getClientWidth()/6, Window.getClientHeight()/2);
   }
 }

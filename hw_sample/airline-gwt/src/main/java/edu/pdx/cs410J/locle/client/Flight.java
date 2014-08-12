@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.locle.client;
 
+import com.google.gwt.i18n.shared.DateTimeFormat;
 import edu.pdx.cs410J.AbstractFlight;
 
 import java.util.Date;
@@ -29,48 +30,63 @@ public class Flight extends AbstractFlight
 
   @Override
   public int getNumber() {
-    if(number != null){
-        return Integer.parseInt(number);
-    }
-      else {
-        return 42;
-    }
+//    if(number != null){
+//        return Integer.parseInt(number);
+//    }
+//      else {
+//        return 42;
+//    }
+      int num = 0;
+      try {
+          num =  Integer.parseInt(number);
+      } catch (NumberFormatException e) {
+//          System.err.println("Flight number isn't an integer");
+      }
+      return num;
   }
 
   @Override
   public String getSource() {
-      if (source != null){
-          return source;
-      }
-      else {
-          return "PDX";
-      }
+//      if (source != null){
+//          return source;
+//      }
+//      else {
+//          return "PDX";
+//      }
+      return source;
   }
 
   @Override
   public Date getDeparture() {
-    return new Date();
+      DateTimeFormat dateTimeFormat = new DateTimeFormat("mm/dd/yyyy hh:mm a") {};
+      Date date = dateTimeFormat.parse(depart);
+      return date;
+//      return new Date();
   }
 
   public String getDepartureString() {
-    return "DEPART " + getDeparture();
+    return /*"DEPART " */ "" +  getDeparture();
   }
 
   public String getDestination() {
-    if(destination!= null){
-        return destination;
-    }
-      else {
-        return "MHT";
-    }
+//    if(destination!= null){
+//        return destination;
+//    }
+//      else {
+//        return "MHT";
+//    }
+      return destination;
   }
 
   public Date getArrival() {
-    return new Date();
+      DateTimeFormat dateTimeFormat = new DateTimeFormat("mm/dd/yyyy hh:mm a") {};
+      Date date = dateTimeFormat.parse(arrive);
+      return date;
+//    return new Date();
   }
 
   public String getArrivalString() {
-    return "ARRIVE " + getArrival();
+    return /*"ARRIVE "*/ "" + getArrival();
   }
 
 }
