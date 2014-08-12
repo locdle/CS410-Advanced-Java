@@ -16,11 +16,28 @@ public interface PingService extends RemoteService {
    */
   public AbstractAirline ping();
 
-  public AbstractAirline pingName(String name);
 
+    /**
+     *
+     * @param airlineName : name of airline
+     * @param number : flight number
+     * @param source : departure terminal
+     * @param depart : departure date and time
+     * @param destination : arrive terminal
+     * @param arrive : arrive day and time
+     * @return the airline with its information
+     */
   public AbstractAirline addFlight(String airlineName, String number, String source,
                                      String depart, String destination, String arrive);
+
+    /**
+     *
+     * @param name : name of airline
+     * @param src: departure terminal
+     * @param dest: arrive terminal
+     * @return the matching airline
+     */
     public AbstractAirline searchFlight(String name, String src, String dest);
 
-    public AbstractFlight searchAFlight(String name, String src, String dest);
+
 }

@@ -8,34 +8,49 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The class airline will store the airline name
+ * and the collection of flights
+ */
 public class Airline extends AbstractAirline
 {
     private String name;
     private List<Flight> flights;
 
+    /**
+     * constructor with argument
+     * @param name
+     */
     public Airline(String name) {
         this.name = name;
         this.flights = new LinkedList<>();
     }
 
+    /**
+     * default constructor
+     */
     public Airline() {
     }
 
-//    private Collection<AbstractFlight> flights = new ArrayList<AbstractFlight>();
 
+    /**
+     * get name of the airline
+     */
   public String getName() {
 
-      if (name != null) {
-          return name;
-      } else {
-          return "Air CS410J";
-      }
+      return name;
   }
 
+    /**
+     * add the info of new flight to the collection of flight
+     */
   public void addFlight(AbstractFlight flight) {
     this.flights.add((Flight)flight);
   }
 
+    /**
+     * return the collection of the flight
+     */
   public Collection getFlights() {
     return this.flights;
   }

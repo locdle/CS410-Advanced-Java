@@ -15,12 +15,27 @@ public interface PingServiceAsync {
   void ping(AsyncCallback<AbstractAirline> async);
 
 
-    void pingName(String name, AsyncCallback<AbstractAirline> async);
-
+    /**
+     *
+     * @param airlineName :name of airline
+     * @param number : flight number
+     * @param source : departure terminal
+     * @param depart : departure day and time
+     * @param destination : arrive terminal
+     * @param arrive : arrive day and time
+     * @param async
+     */
     void addFlight(String airlineName, String number, String source,
                    String depart, String destination, String arrive, AsyncCallback<AbstractAirline> async);
 
+    /**
+     *
+     * @param name : name of airline
+     * @param src: departure terminal
+     * @param dest : arrive terminal
+     * @param async
+     */
     void searchFlight(String name, String src, String dest, AsyncCallback<AbstractAirline> async);
 
-    void searchAFlight(String name, String src, String dest, AsyncCallback<AbstractFlight> async);
+
 }

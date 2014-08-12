@@ -5,6 +5,9 @@ import edu.pdx.cs410J.AbstractFlight;
 
 import java.util.Date;
 
+/**
+ * this is a class flight will store the information of its flight
+ */
 public class Flight extends AbstractFlight
 {
 
@@ -29,64 +32,64 @@ public class Flight extends AbstractFlight
     }
 
   @Override
+  /**
+   * get number of the flight and make sure this is valid number
+   */
   public int getNumber() {
-//    if(number != null){
-//        return Integer.parseInt(number);
-//    }
-//      else {
-//        return 42;
-//    }
       int num = 0;
       try {
           num =  Integer.parseInt(number);
       } catch (NumberFormatException e) {
-//          System.err.println("Flight number isn't an integer");
       }
       return num;
   }
 
   @Override
+  /**
+   *  get the letter code of departure airline
+   */
   public String getSource() {
-//      if (source != null){
-//          return source;
-//      }
-//      else {
-//          return "PDX";
-//      }
       return source;
   }
 
   @Override
+  /**
+   * return type date of departure
+   */
   public Date getDeparture() {
       DateTimeFormat dateTimeFormat = new DateTimeFormat("mm/dd/yyyy hh:mm a") {};
       Date date = dateTimeFormat.parse(depart);
       return date;
-//      return new Date();
   }
 
+    /**
+     *  get the time and day of departure
+     */
   public String getDepartureString() {
-    return /*"DEPART " */ "" +  getDeparture();
+    return  "" +  getDeparture();
   }
 
+    /**
+     *  get  letter code of destination airport
+     */
   public String getDestination() {
-//    if(destination!= null){
-//        return destination;
-//    }
-//      else {
-//        return "MHT";
-//    }
       return destination;
   }
 
+    /**
+     * return type date of arrival
+     */
   public Date getArrival() {
       DateTimeFormat dateTimeFormat = new DateTimeFormat("mm/dd/yyyy hh:mm a") {};
       Date date = dateTimeFormat.parse(arrive);
       return date;
-//    return new Date();
   }
 
+    /**
+     *  get arrival's day and time
+     */
   public String getArrivalString() {
-    return /*"ARRIVE "*/ "" + getArrival();
+    return  "" + getArrival();
   }
 
 }

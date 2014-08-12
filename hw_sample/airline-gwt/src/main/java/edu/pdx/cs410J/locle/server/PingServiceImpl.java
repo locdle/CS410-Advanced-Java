@@ -25,20 +25,18 @@ public class PingServiceImpl extends RemoteServiceServlet implements PingService
         return airline;
     }
 
-    @Override
-    public AbstractAirline pingName(String name) {
-        Airline airline = new Airline(name);
-        airline.addFlight(new Flight());
-        return airline;
-    }
+
 
     @Override
+    /**
+     * return the new airline or flight
+     * and use the information in order to
+     * add in the flextable
+     */
     public AbstractAirline addFlight(String airlineName, String number, String source,
                                      String depart, String destination, String arrive) {
         Airline airline = new Airline(airlineName);
         Flight flight = new Flight(number, source, depart, destination, arrive);
-//        airline.addFlight(flight);
-//        return airline;
 
         if (airlineMap.get(airlineName) == null){
             airline.addFlight(flight);
@@ -51,32 +49,27 @@ public class PingServiceImpl extends RemoteServiceServlet implements PingService
     }
 
     @Override
+    /**
+     * return al the matching flights in the data
+     */
     public AbstractAirline searchFlight(String name, String src, String dest) {
-        Airline airlineFound = new Airline(name);
-        Airline airline = airlineMap.get(name);
-        Collection flights = airline.getFlights();
-//        boolean found = false;
-        for(Object obj:flights){
-            if(src.equals(((Flight)obj).getSource()) && dest.equals(((Flight)obj).getDestination())){
-//                found = true;
-                  airlineFound.addFlight((Flight)obj);
-            }
+        if(airlineMap.get(name) == null){
+            return null;
         }
-        return airlineFound;
+        else {
+            Airline airlineFound = new Airline(name);
+            Airline airline = airlineMap.get(name);
+            Collection flights = airline.getFlights();
+            for (Object obj : flights) {
+                if (src.equals(((Flight) obj).getSource()) && dest.equals(((Flight) obj).getDestination())) {
+                    airlineFound.addFlight((Flight) obj);
+                }
+            }
+            return airlineFound;
+        }
     }
 
-    @Override
-    public AbstractFlight searchAFlight(String name, String src, String dest) {
-        Airline airline = airlineMap.get(name);
-        Collection flights = airline.getFlights();
 
-        for(Object obj:flights){
-            if(src.equals(((Flight)obj).getSource()) && dest.equals(((Flight)obj).getDestination())){
-               return (Flight)obj;
-            }
-        }
-        return null;
-    }
 
 
 }
