@@ -29,6 +29,7 @@ public class AirlineGwt implements EntryPoint {
       flexTable.setText(0, 3, "Departing Date & Time");
       flexTable.setText(0, 4, "Arriving Airport");
       flexTable.setText(0, 5, "Arriving Date & Time");
+      flexTable.setText(0, 6, "Duration");
 
       VerticalPanel verticalPanel = new VerticalPanel();
       verticalPanel.add(new Label("AIRLINE NAME"));
@@ -108,17 +109,20 @@ public class AirlineGwt implements EntryPoint {
                       flexTable.setText(0, 3, "Departing Date & Time");
                       flexTable.setText(0, 4, "Arriving Airport");
                       flexTable.setText(0, 5, "Arriving Date & Time");
+                      flexTable.setText(0, 6, "Duration");
 
                       Collection<AbstractFlight> flights = result.getFlights();
 
                       for(AbstractFlight flight:flights){
                           int row = flexTable.getRowCount() + 1;
+                          Flight temp = (Flight)flight;
                           flexTable.setText(row, 0, result.getName());
                           flexTable.setText(row, 1, Integer.toString(flight.getNumber()));
                           flexTable.setText(row, 2, flight.getSource());
                           flexTable.setText(row, 3, flight.getDepartureString());
                           flexTable.setText(row, 4, flight.getDestination());
                           flexTable.setText(row, 5, flight.getArrivalString());
+                          flexTable.setText(row, 6, String.valueOf(temp.durationTime()));
                       }
                   }
               });

@@ -92,4 +92,19 @@ public class Flight extends AbstractFlight
     return  "" + getArrival();
   }
 
+
+//    public int compareTo(Flight o) {
+//        if(this.getSource().compareTo(o.getSource()) != 0){
+//            return this.getSource().compareTo(o.getSource());
+//        }
+//        else{
+//            return this.getDepartureString().compareTo(o.getDepartureString());
+//        }
+//    }
+
+    public long durationTime(){
+        long different = (this.getArrival().getTime() - this.getDeparture().getTime())/6000;
+        return different;
+    }
+
 }

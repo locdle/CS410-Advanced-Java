@@ -3,10 +3,7 @@ package edu.pdx.cs410J.locle.client;
 import edu.pdx.cs410J.AbstractFlight;
 import edu.pdx.cs410J.AbstractAirline;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * The class airline will store the airline name
@@ -46,6 +43,7 @@ public class Airline extends AbstractAirline
      */
   public void addFlight(AbstractFlight flight) {
     this.flights.add((Flight)flight);
+//      Collections.sort(flights);
   }
 
     /**
